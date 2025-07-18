@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoEmarsysPluginModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.emarsysplugin.ExpoEmarsysPluginModule"]
+  }
+}

@@ -1,6 +1,7 @@
 PODS:
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
+  - EmarsysSDK (3.9.0)
   - EXConstants (17.1.7):
     - ExpoModulesCore
   - Expo (53.0.20):
@@ -33,6 +34,7 @@ PODS:
   - ExpoAsset (11.1.7):
     - ExpoModulesCore
   - ExpoEmarsysPlugin (0.1.0):
+    - EmarsysSDK
     - ExpoModulesCore
   - ExpoFileSystem (18.1.11):
     - ExpoModulesCore
@@ -1718,6 +1720,9 @@ PODS:
     - React-logger (= 0.79.5)
     - React-perflogger (= 0.79.5)
     - React-utils (= 0.79.5)
+  - RNEmarsysWrapper (1.25.0):
+    - EmarsysSDK (~> 3.9.0)
+    - React (>= 0.67.3)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1801,10 +1806,12 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNEmarsysWrapper (from `../node_modules/react-native-emarsys-wrapper`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - EmarsysSDK
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1963,16 +1970,19 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNEmarsysWrapper:
+    :path: "../node_modules/react-native-emarsys-wrapper"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+  EmarsysSDK: 77c5a8ff4c5cdfd6b5bfb7d08c62fcb4aac2e2b5
   EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
   Expo: a40d525c930dd1c8a158e082756ee071955baccb
   ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
-  ExpoEmarsysPlugin: cb8a3bbd87daba53d56bb8d5d9f875588015a5b8
+  ExpoEmarsysPlugin: c80380bf23548414e2838e15bab44a2784b29206
   ExpoFileSystem: 7f92f7be2f5c5ed40a7c9efc8fa30821181d9d63
   ExpoFont: cf508bc2e6b70871e05386d71cab927c8524cc8e
   ExpoKeepAwake: bf0811570c8da182bfb879169437d4de298376e7
@@ -2044,6 +2054,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: f3e842e6cb5a825b6918a74a38402ba1409411f8
   ReactCodegen: 6cb6e0d0b52471abc883541c76589d1c367c64c7
   ReactCommon: 1ab5451fc5da87c4cc4c3046e19a8054624ca763
+  RNEmarsysWrapper: a3155dc9843ee2939834983fbb1b3e55c3f01b93
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: adb397651e1c00672c12e9495babca70777e411e
 

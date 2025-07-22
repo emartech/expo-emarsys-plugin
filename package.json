@@ -28,11 +28,13 @@
   "author": "Emarsys <g-gsuite-mobileengineers@emarsys.com> (https://github.com/emartech)",
   "license": "MIT",
   "homepage": "https://github.com/emartech/expo-emarsys-plugin#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react-native-emarsys-wrapper": "github:emartech/react-native-emarsys-sdk#1.24.0"
+  },
   "devDependencies": {
     "@types/react": "~19.0.0",
-    "expo-module-scripts": "^4.1.9",
     "expo": "~53.0.0",
+    "expo-module-scripts": "^4.1.9",
     "react-native": "0.79.1"
   },
   "peerDependencies": {

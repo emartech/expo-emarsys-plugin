@@ -2,8 +2,8 @@
   "name": "expo-emarsys-plugin",
   "version": "0.1.0",
   "description": "Expo Emarsys Plugin",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "build/withEmarsysPlugin.js",
+  "types": "build/withEmarsysPlugin.d.ts",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",

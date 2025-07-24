@@ -12,7 +12,7 @@
     "expo": "~53.0.20",
     "react": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-emarsys-wrapper": "github:emartech/react-native-emarsys-sdk#1.25.0"
+    "expo-emarsys-plugin": "file:../"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

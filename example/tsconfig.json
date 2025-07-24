@@ -3,7 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "expo-emarsys-plugin": ["../src/index"],
+      "expo-emarsys-plugin": ["../src/withEmarsysPlugin"],
       "expo-emarsys-plugin/*": ["../src/*"]
     }
   }

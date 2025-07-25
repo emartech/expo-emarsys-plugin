@@ -1,6 +1,6 @@
 import { ConfigPlugin, createRunOncePlugin } from "expo/config-plugins";
-// import withAndroidPlugin from "./withAndroidPlugin";
-// import withIosPlugin from "./withIosPlugin";
+import withEmarsysAndroid from "./withEmarsysAndroid";
+import withEmarsysiOS from "./withEmarsysiOS";
 
 const withEmarsysPlugin: ConfigPlugin<{
   applicationCode: string,
@@ -10,10 +10,8 @@ const withEmarsysPlugin: ConfigPlugin<{
   options
 ) => {
   console.log("withEmarsysPlugin called with options:", options);
-  // config = withAndroidPlugin(config, options);
-  // Then apply iOS modifications and return
-  // return withIosPlugin(config, options);
-  return config;
+  config = withEmarsysAndroid(config, options);
+  return withEmarsysiOS(config, options);
 };
 
 const pkg = require("../package.json");

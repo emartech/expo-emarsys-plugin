@@ -8,25 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		26AE0367A9D9872BD77C61DB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DECE7B2A72C15B56E00D19BD /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		93F1D5FD5FCADCC32BF2773F /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CA044FABAA2253D5CAED84 /* ExpoModulesProvider.swift */; };
+		571737EADBB672726A528311 /* libPods-expoemarsyspluginexample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB514DE1461433F1400CF344 /* libPods-expoemarsyspluginexample.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E189647F466B3B80C482A319 /* libPods-expoemarsyspluginexample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EB7FF4043434EC198E1D59C /* libPods-expoemarsyspluginexample.a */; };
+		C7FFDF2894E4A05A17679F09 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E849A350ECB867769AE76D /* ExpoModulesProvider.swift */; };
+		D782939CA8B647C20DF0F0C2 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A9E845BF30A3AAFAEB38270D /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0DA608E74C17C9E9115766E3 /* Pods-expoemarsyspluginexample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expoemarsyspluginexample.release.xcconfig"; path = "Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* expoemarsyspluginexample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = expoemarsyspluginexample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = expoemarsyspluginexample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = expoemarsyspluginexample/Info.plist; sourceTree = "<group>"; };
-		1EB7FF4043434EC198E1D59C /* libPods-expoemarsyspluginexample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expoemarsyspluginexample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		636FA5588AC7EF34E251AE34 /* Pods-expoemarsyspluginexample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expoemarsyspluginexample.debug.xcconfig"; path = "Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample.debug.xcconfig"; sourceTree = "<group>"; };
+		4FDE375F5352B21EA80C8859 /* Pods-expoemarsyspluginexample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expoemarsyspluginexample.release.xcconfig"; path = "Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample.release.xcconfig"; sourceTree = "<group>"; };
+		78E849A350ECB867769AE76D /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-expoemarsyspluginexample/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		A9E845BF30A3AAFAEB38270D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = expoemarsyspluginexample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = expoemarsyspluginexample/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AC6C9D9900E46B6C7AF650E9 /* Pods-expoemarsyspluginexample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expoemarsyspluginexample.debug.xcconfig"; path = "Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample.debug.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C5CA044FABAA2253D5CAED84 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-expoemarsyspluginexample/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		DECE7B2A72C15B56E00D19BD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = expoemarsyspluginexample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BB514DE1461433F1400CF344 /* libPods-expoemarsyspluginexample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expoemarsyspluginexample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = expoemarsyspluginexample/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* expoemarsyspluginexample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "expoemarsyspluginexample-Bridging-Header.h"; path = "expoemarsyspluginexample/expoemarsyspluginexample-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E189647F466B3B80C482A319 /* libPods-expoemarsyspluginexample.a in Frameworks */,
+				571737EADBB672726A528311 /* libPods-expoemarsyspluginexample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				DECE7B2A72C15B56E00D19BD /* PrivacyInfo.xcprivacy */,
+				A9E845BF30A3AAFAEB38270D /* PrivacyInfo.xcprivacy */,
 			);
 			name = expoemarsyspluginexample;
 			sourceTree = "<group>";
@@ -62,16 +62,16 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				1EB7FF4043434EC198E1D59C /* libPods-expoemarsyspluginexample.a */,
+				BB514DE1461433F1400CF344 /* libPods-expoemarsyspluginexample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4BE950F86970A5C2C90E96F3 /* Pods */ = {
+		54CE7A3A083CE7861224D1E0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				636FA5588AC7EF34E251AE34 /* Pods-expoemarsyspluginexample.debug.xcconfig */,
-				0DA608E74C17C9E9115766E3 /* Pods-expoemarsyspluginexample.release.xcconfig */,
+				AC6C9D9900E46B6C7AF650E9 /* Pods-expoemarsyspluginexample.debug.xcconfig */,
+				4FDE375F5352B21EA80C8859 /* Pods-expoemarsyspluginexample.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -91,8 +91,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				4BE950F86970A5C2C90E96F3 /* Pods */,
-				EEC31235BD6377CD2102DCCF /* ExpoModulesProviders */,
+				54CE7A3A083CE7861224D1E0 /* Pods */,
+				C52B7B9B5EE76A17FC725170 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -107,10 +107,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A2350AE6AE1EAB28C145F37F /* expoemarsyspluginexample */ = {
+		95D4B9570F2A671C5C2EF332 /* expoemarsyspluginexample */ = {
 			isa = PBXGroup;
 			children = (
-				C5CA044FABAA2253D5CAED84 /* ExpoModulesProvider.swift */,
+				78E849A350ECB867769AE76D /* ExpoModulesProvider.swift */,
 			);
 			name = expoemarsyspluginexample;
 			sourceTree = "<group>";
@@ -124,10 +124,10 @@
 			path = expoemarsyspluginexample/Supporting;
 			sourceTree = "<group>";
 		};
-		EEC31235BD6377CD2102DCCF /* ExpoModulesProviders */ = {
+		C52B7B9B5EE76A17FC725170 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				A2350AE6AE1EAB28C145F37F /* expoemarsyspluginexample */,
+				95D4B9570F2A671C5C2EF332 /* expoemarsyspluginexample */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "expoemarsyspluginexample" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				1348FE627CA47D4A1686C074 /* [Expo] Configure project */,
+				BD985CA5A439EBDED9A7A418 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				EE10DFA1C27BD891FC17524E /* [CP] Embed Pods Frameworks */,
+				BC254597C38511B5F97A329E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				26AE0367A9D9872BD77C61DB /* PrivacyInfo.xcprivacy in Resources */,
+				D782939CA8B647C20DF0F0C2 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,25 +240,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1348FE627CA47D4A1686C074 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-expoemarsyspluginexample/expo-configure-project.sh\"\n";
-		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,7 +274,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EE10DFA1C27BD891FC17524E /* [CP] Embed Pods Frameworks */ = {
+		BC254597C38511B5F97A329E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -311,6 +292,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-expoemarsyspluginexample/Pods-expoemarsyspluginexample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BD985CA5A439EBDED9A7A418 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-expoemarsyspluginexample/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -319,7 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				93F1D5FD5FCADCC32BF2773F /* ExpoModulesProvider.swift in Sources */,
+				C7FFDF2894E4A05A17679F09 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +328,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 636FA5588AC7EF34E251AE34 /* Pods-expoemarsyspluginexample.debug.xcconfig */;
+			baseConfigurationReference = AC6C9D9900E46B6C7AF650E9 /* Pods-expoemarsyspluginexample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -364,7 +364,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DA608E74C17C9E9115766E3 /* Pods-expoemarsyspluginexample.release.xcconfig */;
+			baseConfigurationReference = 4FDE375F5352B21EA80C8859 /* Pods-expoemarsyspluginexample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

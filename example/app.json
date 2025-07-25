@@ -31,7 +31,7 @@
       [
         "expo-emarsys-plugin",
         {
-          "applicationCode": "EMSXX-XXXXX",
+          "applicationCode": "EMSE7-A1D58",
           "merchantId": "XXXXXXXXXXXXX"
         }
       ]

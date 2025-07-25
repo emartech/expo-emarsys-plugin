@@ -6,8 +6,20 @@ const withEmarsysiOS: ConfigPlugin<{
 }> = (config, options) => {
 
   return withInfoPlist(config, config => {
-    // Add emarsys sdk properties to the Info.plist file
-    // config.modResults.applicationCode = applicationCode;
+    const applicationCode = options.applicationCode;
+    if (applicationCode) {
+      config.modResults.EMSApplicationCode = applicationCode;
+    }
+
+    const merchantId = options.merchantId;
+    if (merchantId) {
+      config.modResults.EMSMerchantId = merchantId;
+    }
+
+    console.log('Emarsys SDK configuration:', {
+      applicationCode: config.modResults.EMSApplicationCode,
+      merchantId: config.modResults.EMSMerchantId,
+    });
     return config;
   });
 };

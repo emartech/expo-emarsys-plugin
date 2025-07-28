@@ -15,11 +15,6 @@ const withEmarsysiOS: ConfigPlugin<{
     if (merchantId) {
       config.modResults.EMSMerchantId = merchantId;
     }
-
-    console.log('Emarsys SDK configuration:', {
-      applicationCode: config.modResults.EMSApplicationCode,
-      merchantId: config.modResults.EMSMerchantId,
-    });
     return config;
   });
 };

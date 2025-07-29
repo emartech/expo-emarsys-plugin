@@ -4,6 +4,7 @@ import {
   withAppBuildGradle,
   withAndroidManifest,
 } from 'expo/config-plugins';
+import { EmarsysSDKOptions } from './types';
 
 const DESUGARING_DEP =
   `coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs_nio:2.1.5'`;
@@ -16,27 +17,27 @@ const GOOGLE_SERVICES_CLASSPATH = "classpath('com.google.gms:google-services:4.4
 const GOOGLE_SERVICES_PLUGIN = "apply plugin: 'com.google.gms.google-services'";
 const FIREBASE_BOM_DEP = "implementation platform('com.google.firebase:firebase-bom:34.0.0')";
 
-const withEmarsysAndroid: ConfigPlugin<{
-  applicationCode: string,
-  merchantId: string
-}> = (config, options) => {
+const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
+const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";
 
-  config = withProjectBuildGradle(config, config => {
+const withEmarsysProjectBuildGradle: ConfigPlugin = config =>
+  withProjectBuildGradle(config, config => {
     let contents = config.modResults.contents;
     if (!contents.includes(GOOGLE_SERVICES_CLASSPATH)) {
       contents = contents.replace(
         /(buildscript\s*{[\s\S]*?dependencies\s*{)/m,
         `$1\n        ${GOOGLE_SERVICES_CLASSPATH}`
       );
-      console.log('Inserted google-services classpath');
     }
     config.modResults.contents = contents;
     return config;
   });
 
-  config = withAppBuildGradle(config, config => {
+const withEmarsysAppBuildGradle: ConfigPlugin = config =>
+  withAppBuildGradle(config, config => {
     let contents = config.modResults.contents;
 
+    // Ensure coreLibraryDesugaringEnabled
     if (!contents.includes('coreLibraryDesugaringEnabled true')) {
       contents = contents.replace(
         /android\s*{[^}]*}/m,
@@ -64,6 +65,7 @@ const withEmarsysAndroid: ConfigPlugin<{
       );
     }
 
+    // Add desugaring and firebase bom dependencies
     contents = contents.replace(
       /dependencies\s*{([\s\S]*?)\n}/m,
       (match, deps) => {
@@ -78,6 +80,7 @@ const withEmarsysAndroid: ConfigPlugin<{
       }
     );
 
+    // Add google-services plugin
     if (!contents.includes(GOOGLE_SERVICES_PLUGIN)) {
       contents = `${contents.trim()}\n${GOOGLE_SERVICES_PLUGIN}\n`;
     }
@@ -86,36 +89,32 @@ const withEmarsysAndroid: ConfigPlugin<{
     return config;
   });
 
-  config = withAndroidManifest(config, config => {
+const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, options) =>
+  withAndroidManifest(config, config => {
     const applicationArray = config.modResults.manifest.application;
     if (!Array.isArray(applicationArray) || applicationArray.length === 0) {
       throw new Error("AndroidManifest.xml does not contain an <application> element.");
     }
     const app = applicationArray[0];
     app['meta-data'] = app['meta-data'] || [];
-    
-    const applicationCode = options.applicationCode;
-    if (applicationCode) {
+
+    if (options.applicationCode) {
       app['meta-data'].push({
         $: {
           'android:name': 'EMSApplicationCode',
-          'android:value': applicationCode,
+          'android:value': options.applicationCode,
         },
       });
     }
-
-    const merchantId = options.merchantId;
-    if (merchantId) {
+    if (options.merchantId) {
       app['meta-data'].push({
         $: {
           'android:name': 'EMSMerchantId',
-          'android:value': merchantId,
+          'android:value': options.merchantId,
         },
       });
     }
 
-    const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
-    const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";
     app.service = app.service || [];
     const alreadyExists = app.service.some(
       (srv) => srv.$['android:name'] === SERVICE_NAME
@@ -143,7 +142,13 @@ const withEmarsysAndroid: ConfigPlugin<{
     return config;
   });
 
+
+export const withEmarsysAndroid: ConfigPlugin<{
+  applicationCode: string,
+  merchantId: string,
+}> = (config, options) => {
+  config = withEmarsysProjectBuildGradle(config);
+  config = withEmarsysAppBuildGradle(config);
+  config = withEmarsysAndroidManifest(config, options);
   return config;
 };
-
-export default withEmarsysAndroid;

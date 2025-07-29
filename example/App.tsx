@@ -1,6 +1,18 @@
+import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      console.log('Setting up Android notification channel');
+      Notifications.setNotificationChannelAsync('ems_sample_messages', {
+        name: 'Messages',
+        importance: Notifications.AndroidImportance.DEFAULT,
+      });
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

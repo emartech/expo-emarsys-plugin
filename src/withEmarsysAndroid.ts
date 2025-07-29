@@ -12,8 +12,9 @@ const COMPILE_OPTIONS = `
   compileOptions {
     coreLibraryDesugaringEnabled true
   }`;
-const GOOGLE_SERVICES_PLUGIN =
-  "id 'com.google.gms.google-services' version '4.4.3' apply false";
+const GOOGLE_SERVICES_CLASSPATH = "classpath('com.google.gms:google-services:4.4.3')";
+const GOOGLE_SERVICES_PLUGIN = "apply plugin: 'com.google.gms.google-services'";
+const FIREBASE_BOM_DEP = "implementation platform('com.google.firebase:firebase-bom:34.0.0')";
 
 const withEmarsysAndroid: ConfigPlugin<{
   applicationCode: string,
@@ -21,44 +22,67 @@ const withEmarsysAndroid: ConfigPlugin<{
 }> = (config, options) => {
 
   config = withProjectBuildGradle(config, config => {
-    const contents = config.modResults.contents;
-
-    if (contents.includes("id 'com.google.gms.google-services'")) {
-      return config;
-    }
-
-    if (/plugins\s*{[\s\S]*?}/.test(contents)) {
-      config.modResults.contents = contents.replace(
-        /(plugins\s*{)/,
-        `$1\n    ${GOOGLE_SERVICES_PLUGIN}`
+    let contents = config.modResults.contents;
+    if (!contents.includes(GOOGLE_SERVICES_CLASSPATH)) {
+      contents = contents.replace(
+        /(buildscript\s*{[\s\S]*?dependencies\s*{)/m,
+        `$1\n        ${GOOGLE_SERVICES_CLASSPATH}`
       );
-    } else {
-      config.modResults.contents =
-        `plugins {\n    ${GOOGLE_SERVICES_PLUGIN}\n}\n\n` + contents;
+      console.log('Inserted google-services classpath');
     }
-
+    config.modResults.contents = contents;
     return config;
   });
 
   config = withAppBuildGradle(config, config => {
-    if (!config.modResults.contents.includes('coreLibraryDesugaringEnabled true')) {
-      config.modResults.contents = config.modResults.contents.replace(
+    let contents = config.modResults.contents;
+
+    if (!contents.includes('coreLibraryDesugaringEnabled true')) {
+      contents = contents.replace(
         /android\s*{[^}]*}/m,
         match => {
-          return match.replace(/}$/, `${COMPILE_OPTIONS}\n}`);
+          if (match.includes('compileOptions')) {
+            return match.replace(
+              /compileOptions\s*{[^}]*}/m,
+              compileOptionsBlock => {
+                if (compileOptionsBlock.includes('coreLibraryDesugaringEnabled')) {
+                  return compileOptionsBlock;
+                }
+                return compileOptionsBlock.replace(
+                  /}/,
+                  '    coreLibraryDesugaringEnabled true\n}'
+                );
+              }
+            );
+          } else {
+            return match.replace(
+              /}/,
+              `${COMPILE_OPTIONS}\n}`
+            );
+          }
         }
       );
     }
 
-    if (!config.modResults.contents.includes(DESUGARING_DEP)) {
-      config.modResults.contents = config.modResults.contents.replace(
-        /dependencies\s*{([\s\S]*?)\n}/m,
-        (match, deps) => {
-          return `dependencies {\n${deps}\n    ${DESUGARING_DEP}\n}`;
+    contents = contents.replace(
+      /dependencies\s*{([\s\S]*?)\n}/m,
+      (match, deps) => {
+        let updatedDeps = deps;
+        if (!updatedDeps.includes(DESUGARING_DEP)) {
+          updatedDeps += `\n    ${DESUGARING_DEP}`;
         }
-      );
+        if (!updatedDeps.includes(FIREBASE_BOM_DEP)) {
+          updatedDeps += `\n    ${FIREBASE_BOM_DEP}`;
+        }
+        return `dependencies {\n${updatedDeps}\n}`;
+      }
+    );
+
+    if (!contents.includes(GOOGLE_SERVICES_PLUGIN)) {
+      contents = `${contents.trim()}\n${GOOGLE_SERVICES_PLUGIN}\n`;
     }
 
+    config.modResults.contents = contents;
     return config;
   });
 

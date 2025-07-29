@@ -17,23 +17,19 @@ const withEmarsysAndroid: ConfigPlugin<{
   merchantId: string
 }> = (config, options) => {
   config = withAppBuildGradle(config, config => {
-    // Inject compileOptions in android { ... }
     if (!config.modResults.contents.includes('coreLibraryDesugaringEnabled true')) {
       config.modResults.contents = config.modResults.contents.replace(
         /android\s*{[^}]*}/m,
         match => {
-          // Add compileOptions before the last '}'
           return match.replace(/}$/, `${COMPILE_OPTIONS}\n}`);
         }
       );
     }
 
-    // Inject dependency in dependencies { ... }
     if (!config.modResults.contents.includes(DESUGARING_DEP)) {
       config.modResults.contents = config.modResults.contents.replace(
-        /dependencies\s*{([\s\S]*?)\n}/m, // Multi-line, matches until last newline before }
+        /dependencies\s*{([\s\S]*?)\n}/m,
         (match, deps) => {
-          // Insert just before the closing }
           return `dependencies {\n${deps}\n    ${DESUGARING_DEP}\n}`;
         }
       );
@@ -69,6 +65,33 @@ const withEmarsysAndroid: ConfigPlugin<{
         },
       });
     }
+
+    const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
+    const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";
+    app.service = app.service || [];
+    const alreadyExists = app.service.some(
+      (srv) => srv.$['android:name'] === SERVICE_NAME
+    );
+    if (!alreadyExists) {
+      app.service.push({
+        $: {
+          'android:name': SERVICE_NAME,
+          'android:exported': 'false',
+        },
+        'intent-filter': [
+          {
+            action: [
+              {
+                $: {
+                  'android:name': MESSAGING_EVENT,
+                },
+              },
+            ],
+          },
+        ],
+      });
+    }
+
     return config;
   });
 

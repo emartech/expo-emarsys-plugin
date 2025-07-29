@@ -106,6 +106,8 @@ const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, opt
       addMetaData(app, 'EMSMerchantId', options.merchantId);
     }
 
+    addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
+
     app.service = app.service || [];
     const alreadyExists = app.service.some(
       (srv) => srv.$['android:name'] === SERVICE_NAME

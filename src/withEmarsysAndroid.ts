@@ -3,7 +3,9 @@ import {
   withProjectBuildGradle,
   withAppBuildGradle,
   withAndroidManifest,
+  withDangerousMod,
 } from 'expo/config-plugins';
+
 import { EmarsysSDKOptions } from './types';
 
 const DESUGARING_DEP =
@@ -142,6 +144,31 @@ const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, opt
     return config;
   });
 
+const withGoogleServicesJson: ConfigPlugin = (config) => {
+  return withDangerousMod(config, [
+    'android',
+    async config => {
+      const fs = require('fs');
+      const path = require('path');
+      const projectRoot = config.modRequest.projectRoot;
+      const source = path.join(projectRoot, 'assets', 'google-services.json');
+      const dest = path.join(projectRoot, 'android', 'app', 'google-services.json');
+
+      if (!fs.existsSync(source)) {
+        throw new Error(
+          `google-services.json not found in assets. Please put your file at: ${source}`
+        );
+      }
+
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+
+      fs.copyFileSync(source, dest);
+      console.log(`Copied google-services.json to ${dest}`);
+
+      return config;
+    },
+  ]);
+};
 
 export const withEmarsysAndroid: ConfigPlugin<{
   applicationCode: string,
@@ -150,5 +177,6 @@ export const withEmarsysAndroid: ConfigPlugin<{
   config = withEmarsysProjectBuildGradle(config);
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);
+  config = withGoogleServicesJson(config);
   return config;
 };

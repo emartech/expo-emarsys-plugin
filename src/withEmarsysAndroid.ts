@@ -98,23 +98,12 @@ const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, opt
       throw new Error("AndroidManifest.xml does not contain an <application> element.");
     }
     const app = applicationArray[0];
-    app['meta-data'] = app['meta-data'] || [];
 
     if (options.applicationCode) {
-      app['meta-data'].push({
-        $: {
-          'android:name': 'EMSApplicationCode',
-          'android:value': options.applicationCode,
-        },
-      });
+      addMetaData(app, 'EMSApplicationCode', options.applicationCode);
     }
     if (options.merchantId) {
-      app['meta-data'].push({
-        $: {
-          'android:name': 'EMSMerchantId',
-          'android:value': options.merchantId,
-        },
-      });
+      addMetaData(app, 'EMSMerchantId', options.merchantId);
     }
 
     app.service = app.service || [];
@@ -143,6 +132,24 @@ const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, opt
 
     return config;
   });
+
+function addMetaData(
+  app: any,
+  name: string,
+  value: string
+) {
+  if (!app['meta-data']) {
+    app['meta-data'] = [];
+  }
+  if (!app['meta-data'].some((item: any) => item.$ && item.$['android:name'] === name)) {
+    app['meta-data'].push({
+      $: {
+        'android:name': name,
+        'android:value': value,
+      },
+    });
+  }
+}
 
 const withGoogleServicesJson: ConfigPlugin = (config) => {
   return withDangerousMod(config, [

@@ -1,21 +1,27 @@
 package expo.modules.adapters.emarsysplugin
 
 import android.app.Application
-import android.util.Log
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import android.os.Bundle
 import expo.modules.core.interfaces.ApplicationLifecycleListener
 import com.emarsys.Emarsys
 import com.emarsys.config.EmarsysConfig
 
 class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
-    override fun onCreate(application: Application) {
-        super.onCreate(application)
-        val config = EmarsysConfig(
-          application = application,
-          applicationCode = "EMSE7-A1D58",
-          merchantId = "1DF86BF95CBE8F19",
-          verboseConsoleLoggingEnabled = true)
-        Emarsys.setup(config)
+  override fun onCreate(application: Application) {
+    super.onCreate(application)
+    val appInfo: ApplicationInfo = application.packageManager
+      .getApplicationInfo(application.packageName, PackageManager.GET_META_DATA)
+    val metaData: Bundle = appInfo.metaData
+    val applicationCode: String? = metaData.getString("EMSApplicationCode")
+    val merchantId: String? = metaData.getString("EMSMerchantId")
 
-        Emarsys.trackCustomEvent("wrapper:init", mapOf())
-    }
+    val config = EmarsysConfig(
+      application = application,
+      applicationCode = applicationCode,
+      merchantId = merchantId,
+      verboseConsoleLoggingEnabled = true)
+    Emarsys.setup(config)
+  }
 }

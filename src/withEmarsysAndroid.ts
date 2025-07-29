@@ -1,7 +1,7 @@
 import {
   ConfigPlugin,
   withAppBuildGradle,
-  // withAndroidManifest,
+  withAndroidManifest,
 } from 'expo/config-plugins';
 
 const DESUGARING_DEP =
@@ -42,10 +42,35 @@ const withEmarsysAndroid: ConfigPlugin<{
     return config;
   });
 
-  // config = withAndroidManifest(config, config => {
-  //   // TODO: Add Emarsys messaging service, etc.
-  //   return config;
-  // });
+  config = withAndroidManifest(config, config => {
+    const applicationArray = config.modResults.manifest.application;
+    if (!Array.isArray(applicationArray) || applicationArray.length === 0) {
+      throw new Error("AndroidManifest.xml does not contain an <application> element.");
+    }
+    const app = applicationArray[0];
+    app['meta-data'] = app['meta-data'] || [];
+    
+    const applicationCode = options.applicationCode;
+    if (applicationCode) {
+      app['meta-data'].push({
+        $: {
+          'android:name': 'EMSApplicationCode',
+          'android:value': applicationCode,
+        },
+      });
+    }
+
+    const merchantId = options.merchantId;
+    if (merchantId) {
+      app['meta-data'].push({
+        $: {
+          'android:name': 'EMSMerchantId',
+          'android:value': merchantId,
+        },
+      });
+    }
+    return config;
+  });
 
   return config;
 };

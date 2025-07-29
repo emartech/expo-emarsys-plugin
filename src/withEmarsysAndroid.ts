@@ -1,5 +1,6 @@
 import {
   ConfigPlugin,
+  withProjectBuildGradle,
   withAppBuildGradle,
   withAndroidManifest,
 } from 'expo/config-plugins';
@@ -11,11 +12,34 @@ const COMPILE_OPTIONS = `
   compileOptions {
     coreLibraryDesugaringEnabled true
   }`;
+const GOOGLE_SERVICES_PLUGIN =
+  "id 'com.google.gms.google-services' version '4.4.3' apply false";
 
 const withEmarsysAndroid: ConfigPlugin<{
   applicationCode: string,
   merchantId: string
 }> = (config, options) => {
+
+  config = withProjectBuildGradle(config, config => {
+    const contents = config.modResults.contents;
+
+    if (contents.includes("id 'com.google.gms.google-services'")) {
+      return config;
+    }
+
+    if (/plugins\s*{[\s\S]*?}/.test(contents)) {
+      config.modResults.contents = contents.replace(
+        /(plugins\s*{)/,
+        `$1\n    ${GOOGLE_SERVICES_PLUGIN}`
+      );
+    } else {
+      config.modResults.contents =
+        `plugins {\n    ${GOOGLE_SERVICES_PLUGIN}\n}\n\n` + contents;
+    }
+
+    return config;
+  });
+
   config = withAppBuildGradle(config, config => {
     if (!config.modResults.contents.includes('coreLibraryDesugaringEnabled true')) {
       config.modResults.contents = config.modResults.contents.replace(

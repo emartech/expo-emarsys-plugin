@@ -168,6 +168,32 @@ const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =
     return config;
   });
 
+const withLogoIcon: ConfigPlugin = (config) => {
+  return withDangerousMod(config, [
+    'android',
+    async config => {
+      const fs = require('fs');
+      const path = require('path');
+      const projectRoot = config.modRequest.projectRoot;
+      const source = path.join(projectRoot, 'assets', 'mobile_engage_logo_icon.jpg');
+      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', 'mobile_engage_logo_icon.jpg');
+
+      if (!fs.existsSync(source)) {
+        throw new Error(
+          `mobile_engage_logo_icon not found in assets. Please put your file at: ${source}`
+        );
+      }
+
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+
+      fs.copyFileSync(source, dest);
+      console.log(`Copied mobile_engage_logo_icon to ${dest}`);
+
+      return config;
+    },
+  ]);
+};
+
 const withGoogleServicesJson: ConfigPlugin = (config) => {
   return withDangerousMod(config, [
     'android',
@@ -199,5 +225,6 @@ export const withEmarsysAndroid: ConfigPlugin<EMSOptions> = (config, options) =>
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);
   config = withGoogleServicesJson(config);
+  config = withLogoIcon(config);
   return config;
 };

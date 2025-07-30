@@ -1,9 +1,9 @@
 import { ConfigPlugin, createRunOncePlugin } from "expo/config-plugins";
 import { withEmarsysAndroid } from "./withEmarsysAndroid";
-import withEmarsysiOS from "./withEmarsysiOS";
-import { EmarsysSDKOptions } from "./types";
+import { withEmarsysiOS } from "./withEmarsysiOS";
+import { EMSOptions } from "./types";
 
-const withEmarsysPlugin: ConfigPlugin<EmarsysSDKOptions> = (
+const withEmarsysPlugin: ConfigPlugin<EMSOptions> = (
   config,
   options
 ) => {

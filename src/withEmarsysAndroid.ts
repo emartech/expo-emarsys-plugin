@@ -6,7 +6,7 @@ import {
   withDangerousMod,
 } from 'expo/config-plugins';
 
-import { EmarsysSDKOptions } from './types';
+import { EMSOptions } from './types';
 
 const DESUGARING_DEP =
   `coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs_nio:2.1.5'`;
@@ -91,50 +91,6 @@ const withEmarsysAppBuildGradle: ConfigPlugin = config =>
     return config;
   });
 
-const withEmarsysAndroidManifest: ConfigPlugin<EmarsysSDKOptions> = (config, options) =>
-  withAndroidManifest(config, config => {
-    const applicationArray = config.modResults.manifest.application;
-    if (!Array.isArray(applicationArray) || applicationArray.length === 0) {
-      throw new Error("AndroidManifest.xml does not contain an <application> element.");
-    }
-    const app = applicationArray[0];
-
-    if (options.applicationCode) {
-      addMetaData(app, 'EMSApplicationCode', options.applicationCode);
-    }
-    if (options.merchantId) {
-      addMetaData(app, 'EMSMerchantId', options.merchantId);
-    }
-
-    addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
-
-    app.service = app.service || [];
-    const alreadyExists = app.service.some(
-      (srv) => srv.$['android:name'] === SERVICE_NAME
-    );
-    if (!alreadyExists) {
-      app.service.push({
-        $: {
-          'android:name': SERVICE_NAME,
-          'android:exported': 'false',
-        },
-        'intent-filter': [
-          {
-            action: [
-              {
-                $: {
-                  'android:name': MESSAGING_EVENT,
-                },
-              },
-            ],
-          },
-        ],
-      });
-    }
-
-    return config;
-  });
-
 function addMetaData(
   app: any,
   name: string,
@@ -152,6 +108,65 @@ function addMetaData(
     });
   }
 }
+
+function addEmarsysMessagingService(app: any) {
+  app.service = app.service || [];
+  const hasEmarsysMessagingService = app.service.some(
+    (srv: any) => srv.$['android:name'] === SERVICE_NAME
+  );
+
+  const hasMessagingEventIntentFilter = app.service.some(
+    (srv: any) => srv['intent-filter'] &&
+      srv['intent-filter'].some((filter: any) =>
+        filter.action &&
+        filter.action.some((action: any) =>
+          action.$ && action.$['android:name'] === MESSAGING_EVENT
+        )
+      )
+  );
+
+  if (!hasEmarsysMessagingService && !hasMessagingEventIntentFilter) {
+    app.service.push({
+      $: {
+        'android:name': SERVICE_NAME,
+        'android:exported': 'false',
+      },
+      'intent-filter': [
+        {
+          action: [
+            {
+              $: {
+                'android:name': MESSAGING_EVENT,
+              },
+            },
+          ],
+        },
+      ],
+    });
+  }
+}
+
+const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =>
+  withAndroidManifest(config, config => {
+    const applicationArray = config.modResults.manifest.application;
+    if (!Array.isArray(applicationArray) || applicationArray.length === 0) {
+      throw new Error("AndroidManifest.xml does not contain an <application> element.");
+    }
+    const app = applicationArray[0];
+
+    if (options.applicationCode) {
+      addMetaData(app, 'EMSApplicationCode', options.applicationCode);
+    }
+    if (options.merchantId) {
+      addMetaData(app, 'EMSMerchantId', options.merchantId);
+    }
+
+    addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
+
+    addEmarsysMessagingService(app);
+
+    return config;
+  });
 
 const withGoogleServicesJson: ConfigPlugin = (config) => {
   return withDangerousMod(config, [
@@ -179,10 +194,7 @@ const withGoogleServicesJson: ConfigPlugin = (config) => {
   ]);
 };
 
-export const withEmarsysAndroid: ConfigPlugin<{
-  applicationCode: string,
-  merchantId: string,
-}> = (config, options) => {
+export const withEmarsysAndroid: ConfigPlugin<EMSOptions> = (config, options) => {
   config = withEmarsysProjectBuildGradle(config);
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);

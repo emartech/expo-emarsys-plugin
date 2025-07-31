@@ -22,6 +22,8 @@ const FIREBASE_BOM_DEP = "implementation platform('com.google.firebase:firebase-
 const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
 const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";
 
+const MOBILE_ENGAGE_LOGO_ICON = 'mobile_engage_logo_icon';
+
 const withEmarsysProjectBuildGradle: ConfigPlugin = config =>
   withProjectBuildGradle(config, config => {
     let contents = config.modResults.contents;
@@ -161,37 +163,51 @@ const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =
       addMetaData(app, 'EMSMerchantId', options.merchantId);
     }
 
-    addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
-
     addEmarsysMessagingService(app);
 
     return config;
   });
 
-const withLogoIcon: ConfigPlugin = (config) => {
-  return withDangerousMod(config, [
+const withPushMessageLogoIcon: ConfigPlugin = (config) => {
+  config = withDangerousMod(config, [
     'android',
     async config => {
       const fs = require('fs');
       const path = require('path');
       const projectRoot = config.modRequest.projectRoot;
-      const source = path.join(projectRoot, 'assets', 'mobile_engage_logo_icon.jpg');
-      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', 'mobile_engage_logo_icon.jpg');
+      const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
 
       if (!fs.existsSync(source)) {
-        throw new Error(
-          `mobile_engage_logo_icon not found in assets. Please put your file at: ${source}`
-        );
+        console.warn(`Source file ${source} does not exist. Skipping copy.`);
+        return config;
       }
 
       fs.mkdirSync(path.dirname(dest), { recursive: true });
-
       fs.copyFileSync(source, dest);
-      console.log(`Copied mobile_engage_logo_icon to ${dest}`);
-
+      console.log(`Copied ${MOBILE_ENGAGE_LOGO_ICON} to ${dest}`);
       return config;
     },
   ]);
+
+  config = withAndroidManifest(config, config => {
+    const fs = require('fs');
+    const path = require('path');
+    const projectRoot = config.modRequest.projectRoot;
+    const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+    if (!fs.existsSync(source)) {
+      console.warn(`Source file ${source} does not exist. Skipping AndroidManifest update.`);
+      return config;
+    }
+    const applicationArray = config.modResults.manifest.application;
+    if (Array.isArray(applicationArray) && applicationArray.length > 0) {
+      const app = applicationArray[0];
+      addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', `@drawable/${MOBILE_ENGAGE_LOGO_ICON}`);
+    }
+    return config;
+  });
+
+  return config;
 };
 
 const withGoogleServicesJson: ConfigPlugin = (config) => {
@@ -225,6 +241,6 @@ export const withEmarsysAndroid: ConfigPlugin<EMSOptions> = (config, options) =>
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);
   config = withGoogleServicesJson(config);
-  config = withLogoIcon(config);
+  config = withPushMessageLogoIcon(config);
   return config;
 };

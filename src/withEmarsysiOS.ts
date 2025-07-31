@@ -1,11 +1,8 @@
 import { ConfigPlugin, withInfoPlist } from 'expo/config-plugins';
+import { EMSOptions } from './types';
 
-const withEmarsysiOS: ConfigPlugin<{
-  applicationCode: string,
-  merchantId: string
-}> = (config, options) => {
-
-  return withInfoPlist(config, config => {
+const withEmarsysInfoPlist: ConfigPlugin<EMSOptions> = (config, options) =>
+  withInfoPlist(config, config => {
     const applicationCode = options.applicationCode;
     if (applicationCode) {
       config.modResults.EMSApplicationCode = applicationCode;
@@ -17,6 +14,8 @@ const withEmarsysiOS: ConfigPlugin<{
     }
     return config;
   });
-};
 
-export default withEmarsysiOS;
+export const withEmarsysiOS: ConfigPlugin<EMSOptions> = (config, options) => {
+  config = withEmarsysInfoPlist(config, options);
+  return config;
+};

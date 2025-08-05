@@ -1,10 +1,20 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, Text, Button } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
+import Emarsys from 'react-native-emarsys-wrapper';
 
 export default function App() {
   useEffect(() => {
+    Emarsys.setEventHandler(function (eventName, payload) {
+      console.log(`Event: ${eventName}`, payload);
+      Alert.alert(
+        `Emarsys Event: ${eventName}`,
+        JSON.stringify(payload, null, 2),
+        [{ text: 'OK' }]
+      );
+    });
+
     if (Platform.OS === 'android') {
       console.log('Setting up Android notification channel');
       Notifications.setNotificationChannelAsync('ems_sample_messages', {
@@ -18,17 +28,12 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Expo Emarsys Plugin</Text>
+        <Button title="Set Contact" onPress={() => {
+          console.log('Set Contact pressed');
+          Emarsys.setContact(3, "eduardo.zatoni@emarsys.com")
+        }} />
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function Group(props: { name: string; children: React.ReactNode }) {
-  return (
-    <View style={styles.group}>
-      <Text style={styles.groupHeader}>{props.name}</Text>
-      {props.children}
-    </View>
   );
 }
 

@@ -6,7 +6,6 @@ import {
   withDangerousMod,
   withMainApplication
 } from 'expo/config-plugins';
-
 import { EMSOptions } from './types';
 import { addMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
 

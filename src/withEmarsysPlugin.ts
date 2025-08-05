@@ -9,7 +9,8 @@ const withEmarsysPlugin: ConfigPlugin<EMSOptions> = (
 ) => {
   console.log("withEmarsysPlugin called with options:", options);
   config = withEmarsysAndroid(config, options);
-  return withEmarsysiOS(config, options);
+  config = withEmarsysiOS(config, options);
+  return config;
 };
 
 const pkg = require("../package.json");

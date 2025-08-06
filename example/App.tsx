@@ -29,8 +29,10 @@ export default function App() {
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Expo Emarsys Plugin</Text>
         <Button title="Set Contact" onPress={() => {
-          console.log('Set Contact pressed');
-          Emarsys.setContact(3, "eduardo.zatoni@emarsys.com")
+          console.log('Set Contact pressed')
+          const contactFieldId = 100009769
+          const contactFieldValue = "B8mau1nMO8PilvTp6P" // demoapp@emarsys.com
+          Emarsys.setContact(contactFieldId, contactFieldValue)
         }} />
       </ScrollView>
     </SafeAreaView>

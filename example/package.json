@@ -11,9 +11,10 @@
   "dependencies": {
     "expo": "~53.0.20",
     "expo-emarsys-plugin": "file:../",
+    "expo-notifications": "~0.31.4",
     "react": "19.0.0",
     "react-native": "0.79.5",
-    "expo-notifications": "~0.31.4"
+    "react-native-emarsys-wrapper": "github:emartech/react-native-emarsys-sdk#1.25.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

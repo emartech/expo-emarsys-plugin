@@ -4,9 +4,11 @@ import {
   withAppBuildGradle,
   withAndroidManifest,
   withDangerousMod,
+  withMainApplication
 } from 'expo/config-plugins';
 
 import { EMSOptions } from './types';
+import { addMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
 
 const DESUGARING_DEP =
   `coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs_nio:2.1.5'`;
@@ -19,8 +21,7 @@ const GOOGLE_SERVICES_CLASSPATH = "classpath('com.google.gms:google-services:4.4
 const GOOGLE_SERVICES_PLUGIN = "apply plugin: 'com.google.gms.google-services'";
 const FIREBASE_BOM_DEP = "implementation platform('com.google.firebase:firebase-bom:34.0.0')";
 
-const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
-const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";
+const MOBILE_ENGAGE_LOGO_ICON = 'mobile_engage_logo_icon';
 
 const withEmarsysProjectBuildGradle: ConfigPlugin = config =>
   withProjectBuildGradle(config, config => {
@@ -91,61 +92,6 @@ const withEmarsysAppBuildGradle: ConfigPlugin = config =>
     return config;
   });
 
-function addMetaData(
-  app: any,
-  name: string,
-  value: string
-) {
-  if (!app['meta-data']) {
-    app['meta-data'] = [];
-  }
-  if (!app['meta-data'].some((item: any) => item.$ && item.$['android:name'] === name)) {
-    app['meta-data'].push({
-      $: {
-        'android:name': name,
-        'android:value': value,
-      },
-    });
-  }
-}
-
-function addEmarsysMessagingService(app: any) {
-  app.service = app.service || [];
-  const hasEmarsysMessagingService = app.service.some(
-    (srv: any) => srv.$['android:name'] === SERVICE_NAME
-  );
-
-  const hasMessagingEventIntentFilter = app.service.some(
-    (srv: any) => srv['intent-filter'] &&
-      srv['intent-filter'].some((filter: any) =>
-        filter.action &&
-        filter.action.some((action: any) =>
-          action.$ && action.$['android:name'] === MESSAGING_EVENT
-        )
-      )
-  );
-
-  if (!hasEmarsysMessagingService && !hasMessagingEventIntentFilter) {
-    app.service.push({
-      $: {
-        'android:name': SERVICE_NAME,
-        'android:exported': 'false',
-      },
-      'intent-filter': [
-        {
-          action: [
-            {
-              $: {
-                'android:name': MESSAGING_EVENT,
-              },
-            },
-          ],
-        },
-      ],
-    });
-  }
-}
-
 const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =>
   withAndroidManifest(config, config => {
     const applicationArray = config.modResults.manifest.application;
@@ -161,37 +107,51 @@ const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =
       addMetaData(app, 'EMSMerchantId', options.merchantId);
     }
 
-    addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
-
     addEmarsysMessagingService(app);
 
     return config;
   });
 
-const withLogoIcon: ConfigPlugin = (config) => {
-  return withDangerousMod(config, [
+const withPushMessageLogoIcon: ConfigPlugin = (config) => {
+  config = withDangerousMod(config, [
     'android',
     async config => {
       const fs = require('fs');
       const path = require('path');
       const projectRoot = config.modRequest.projectRoot;
-      const source = path.join(projectRoot, 'assets', 'mobile_engage_logo_icon.jpg');
-      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', 'mobile_engage_logo_icon.jpg');
+      const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
 
       if (!fs.existsSync(source)) {
-        throw new Error(
-          `mobile_engage_logo_icon not found in assets. Please put your file at: ${source}`
-        );
+        console.warn(`Source file ${source} does not exist. Skipping copy.`);
+        return config;
       }
 
       fs.mkdirSync(path.dirname(dest), { recursive: true });
-
       fs.copyFileSync(source, dest);
-      console.log(`Copied mobile_engage_logo_icon to ${dest}`);
-
+      console.log(`Copied ${MOBILE_ENGAGE_LOGO_ICON} to ${dest}`);
       return config;
     },
   ]);
+
+  config = withAndroidManifest(config, config => {
+    const fs = require('fs');
+    const path = require('path');
+    const projectRoot = config.modRequest.projectRoot;
+    const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+    if (!fs.existsSync(source)) {
+      console.warn(`Source file ${source} does not exist. Skipping AndroidManifest update.`);
+      return config;
+    }
+    const applicationArray = config.modResults.manifest.application;
+    if (Array.isArray(applicationArray) && applicationArray.length > 0) {
+      const app = applicationArray[0];
+      addMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', `@drawable/${MOBILE_ENGAGE_LOGO_ICON}`);
+    }
+    return config;
+  });
+
+  return config;
 };
 
 const withGoogleServicesJson: ConfigPlugin = (config) => {
@@ -220,11 +180,36 @@ const withGoogleServicesJson: ConfigPlugin = (config) => {
   ]);
 };
 
+const withEmarsysMainApplication: ConfigPlugin = (config) => {
+  return withMainApplication(config, config => {
+    let contents = config.modResults.contents;
+
+    if (!contents.includes('import com.emarsys.rnwrapper.RNEmarsysEventHandler')) {
+      contents = contents.replace(
+        /package .*?\n/,
+        (match) => `${match}import com.emarsys.rnwrapper.RNEmarsysEventHandler;\n`
+      );
+    }
+
+    if (!contents.includes('RNEmarsysEventHandler.getInstance().setEventHandlers()')) {
+      console.log('Injecting RNEmarsysEventHandler setup');
+      contents = contents.replace(
+        /ApplicationLifecycleDispatcher\.onApplicationCreate\(this\)/,
+        `ApplicationLifecycleDispatcher.onApplicationCreate(this)\n    val eventHandler = RNEmarsysEventHandler.getInstance();\n    eventHandler.setEventHandlers();`
+      );
+    }
+
+    config.modResults.contents = contents;
+    return config;
+  });
+};
+
 export const withEmarsysAndroid: ConfigPlugin<EMSOptions> = (config, options) => {
   config = withEmarsysProjectBuildGradle(config);
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);
   config = withGoogleServicesJson(config);
-  config = withLogoIcon(config);
+  config = withPushMessageLogoIcon(config);
+  config = withEmarsysMainApplication(config);
   return config;
 };

@@ -15,13 +15,7 @@ export default function App() {
       );
     });
 
-    if (Platform.OS === 'android') {
-      console.log('Setting up Android notification channel');
-      Notifications.setNotificationChannelAsync('ems_sample_messages', {
-        name: 'Messages',
-        importance: Notifications.AndroidImportance.DEFAULT,
-      });
-    }
+    registerForPushNotificationsAsync();
   }, []);
 
   return (
@@ -29,14 +23,38 @@ export default function App() {
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Expo Emarsys Plugin</Text>
         <Button title="Set Contact" onPress={() => {
-          console.log('Set Contact pressed')
-          const contactFieldId = 100009769
-          const contactFieldValue = "B8mau1nMO8PilvTp6P" // demoapp@emarsys.com
-          Emarsys.setContact(contactFieldId, contactFieldValue)
+          console.log('Set Contact pressed');
+          const contactFieldId = 100010824;
+          const contactFieldValue = "B8mau1nMO8PilvTp6P"; // demoapp@emarsys.com
+          Emarsys.setContact(contactFieldId, contactFieldValue);
         }} />
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+async function registerForPushNotificationsAsync() {
+  if (Platform.OS === 'android') {
+    console.log('Setting up Android notification channel');
+    Notifications.setNotificationChannelAsync('ems_sample_messages', {
+      name: 'Messages',
+      importance: Notifications.AndroidImportance.DEFAULT,
+    });
+  }
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== 'granted') {
+    console.log('Requesting permissions for push notifications');
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== 'granted') {
+    alert('Failed to get push token for push notification!');
+  }
+
+  console.log('Getting device push token');
+  // trigger the native code to register the device 
+  await Notifications.getDevicePushTokenAsync(); // does not resolve to a token, but triggers the native code to register the device
 }
 
 const styles = {

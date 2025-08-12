@@ -16,7 +16,6 @@ public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
     }
     Emarsys.setup(config: config)
     UNUserNotificationCenter.current().delegate = Emarsys.push
-    // TODO: handle emarsys events
 
     return true
   }

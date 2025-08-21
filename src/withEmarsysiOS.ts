@@ -1,4 +1,10 @@
-import { ConfigPlugin, withInfoPlist, withDangerousMod, withXcodeProject } from 'expo/config-plugins';
+import {
+  ConfigPlugin,
+  withInfoPlist,
+  withDangerousMod,
+  withXcodeProject,
+  withPodfileProperties
+} from 'expo/config-plugins';
 import { EMSOptions } from './types';
 
 const NOTIFICATION_SERVICE_TARGET = 'NotificationService';
@@ -132,9 +138,26 @@ const withEmarsysXcodeProject: ConfigPlugin<EMSOptions> = (config, options) =>
     return config;
   });
 
+const withEmarsysPodfileConfig: ConfigPlugin = (config) => {
+  config = withPodfileProperties(config, ({ modResults, ...config }) => {
+    modResults = {
+      ...modResults,
+      "ios.useFrameworks": "static",
+      "ios.deploymentTarget": "15.1",
+    };
+    return {
+      modResults,
+      ...config,
+    };
+  });
+
+  return config;
+}
+
 export const withEmarsysiOS: ConfigPlugin<EMSOptions> = (config, options) => {
   config = withEmarsysInfoPlist(config, options);
   config = withEmarsysDangerousMod(config, options);
   config = withEmarsysXcodeProject(config, options);
+  config = withEmarsysPodfileConfig(config);
   return config;
 };

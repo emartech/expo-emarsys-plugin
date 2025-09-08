@@ -7,6 +7,7 @@ import android.os.Bundle
 import expo.modules.core.interfaces.ApplicationLifecycleListener
 import com.emarsys.Emarsys
 import com.emarsys.config.EmarsysConfig
+import com.emarsys.rnwrapper.RNEmarsysEventHandler
 
 class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
   override fun onCreate(application: Application) {
@@ -23,5 +24,8 @@ class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
       merchantId = merchantId,
       verboseConsoleLoggingEnabled = true)
     Emarsys.setup(config)
+
+    val eventHandler = RNEmarsysEventHandler.getInstance()
+    eventHandler.setEventHandlers()
   }
 }

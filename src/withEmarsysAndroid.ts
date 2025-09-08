@@ -3,8 +3,7 @@ import {
   withProjectBuildGradle,
   withAppBuildGradle,
   withAndroidManifest,
-  withDangerousMod,
-  withMainApplication
+  withDangerousMod
 } from 'expo/config-plugins';
 import { EMSOptions } from './types';
 import { addMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
@@ -179,36 +178,11 @@ const withGoogleServicesJson: ConfigPlugin = (config) => {
   ]);
 };
 
-const withEmarsysMainApplication: ConfigPlugin = (config) => {
-  return withMainApplication(config, config => {
-    let contents = config.modResults.contents;
-
-    if (!contents.includes('import com.emarsys.rnwrapper.RNEmarsysEventHandler')) {
-      contents = contents.replace(
-        /package .*?\n/,
-        (match) => `${match}import com.emarsys.rnwrapper.RNEmarsysEventHandler;\n`
-      );
-    }
-
-    if (!contents.includes('RNEmarsysEventHandler.getInstance().setEventHandlers()')) {
-      console.log('Injecting RNEmarsysEventHandler setup');
-      contents = contents.replace(
-        /ApplicationLifecycleDispatcher\.onApplicationCreate\(this\)/,
-        `ApplicationLifecycleDispatcher.onApplicationCreate(this)\n    val eventHandler = RNEmarsysEventHandler.getInstance();\n    eventHandler.setEventHandlers();`
-      );
-    }
-
-    config.modResults.contents = contents;
-    return config;
-  });
-};
-
 export const withEmarsysAndroid: ConfigPlugin<EMSOptions> = (config, options) => {
   config = withEmarsysProjectBuildGradle(config);
   config = withEmarsysAppBuildGradle(config);
   config = withEmarsysAndroidManifest(config, options);
   config = withGoogleServicesJson(config);
   config = withPushMessageLogoIcon(config);
-  config = withEmarsysMainApplication(config);
   return config;
 };

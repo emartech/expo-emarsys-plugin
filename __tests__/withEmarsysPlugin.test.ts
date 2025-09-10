@@ -1,9 +1,55 @@
+import withEmarsysPlugin from '../src/withEmarsysPlugin';
+import { EMSOptions } from '../src/types';
+
 describe('withEmarsysPlugin', () => {
-  it('adds 1 + 2 to equal 3', () => {
-    expect(1 + 2).toBe(3);
+  const mockConfig = {
+    name: 'test-app',
+    slug: 'test-app',
+  };
+
+  const mockOptions: EMSOptions = {
+    applicationCode: 'TEST_APP_CODE',
+    merchantId: 'TEST_MERCHANT_ID',
+  };
+
+  it('should be a function', () => {
+    expect(typeof withEmarsysPlugin).toBe('function');
   });
 
-  it('always passes', () => {
-    expect(true).toBe(true);
+  it('should return a config object when called', () => {
+    const result = withEmarsysPlugin(mockConfig, mockOptions);
+    
+    expect(result).toBeDefined();
+    expect(typeof result).toBe('object');
+    expect(result.name).toBe('test-app');
+    expect(result.slug).toBe('test-app');
+  });
+
+  it('should handle valid options without throwing', () => {
+    expect(() => {
+      withEmarsysPlugin(mockConfig, mockOptions);
+    }).not.toThrow();
+  });
+
+  it('should handle empty options without throwing', () => {
+    const emptyOptions = {} as EMSOptions;
+    
+    expect(() => {
+      withEmarsysPlugin(mockConfig, emptyOptions);
+    }).not.toThrow();
+  });
+
+  it('should accept applicationCode as string', () => {
+    expect(typeof mockOptions.applicationCode).toBe('string');
+    expect(() => {
+      withEmarsysPlugin(mockConfig, mockOptions);
+    }).not.toThrow();
+  });
+
+  it('should accept merchantId as string', () => {
+    expect(typeof mockOptions.merchantId).toBe('string');
+    expect(() => {
+      withEmarsysPlugin(mockConfig, mockOptions);
+    }).not.toThrow();
   });
 });

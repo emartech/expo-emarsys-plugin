@@ -8,7 +8,10 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "lint": "expo-module lint",
-    "test": "expo-module test",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "expo-module:test": "expo-module test",
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly",
     "expo-module": "expo-module",
@@ -28,13 +31,14 @@
   "author": "Emarsys <g-gsuite-mobileengineers@emarsys.com> (https://github.com/emartech)",
   "license": "MIT",
   "homepage": "https://github.com/emartech/expo-emarsys-plugin#readme",
-  "dependencies": {
-  },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/react": "~19.0.0",
     "expo": "~53.0.0",
     "expo-module-scripts": "^4.1.9",
-    "react-native": "0.79.1"
+    "jest": "^29.7.0",
+    "react-native": "0.79.1",
+    "ts-jest": "^29.4.1"
   },
   "peerDependencies": {
     "expo": "*",

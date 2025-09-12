@@ -51,4 +51,4 @@ npx expo prebuild
 
 1. Install the **React Native Emarsys Wrapper** following the setup guide: [React Native Emarsys SDK – Setup](https://github.com/emartech/react-native-emarsys-sdk?tab=readme-ov-file#setup)
 
-2. Continue with the wrapper’s [documentation](https://github.com/emartech/react-native-emarsys-sdk/wiki#2-set-contact).
+2. Continue with the wrapper’s [documentation](https://github.com/emartech/react-native-emarsys-sdk/wiki#react-native-integration).

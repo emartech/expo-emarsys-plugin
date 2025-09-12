@@ -1,35 +1,54 @@
-# expo-emarsys-plugin
+# Expo Emarsys Plugin
 
-Expo Emarsys Plugin
+> **Important**  
+> This plugin is in Pilot release. Please contact your Client Success Manager before starting the implementation.
 
-# API documentation
+The Expo Emarsys Plugin automatically integrates the **Emarsys SDK** into your Expo app’s native modules.  
+It works **alongside the [React Native Emarsys Wrapper](https://github.com/emartech/react-native-emarsys-sdk/wiki)**, which provides the full API for interacting with Emarsys features.
 
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/emarsys-plugin/)
-- [Documentation for the main branch](https://docs.expo.dev/versions/unversioned/sdk/emarsys-plugin/)
+---
 
-# Installation in managed Expo projects
+## Installation
 
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
-
-# Installation in bare React Native projects
-
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
-
-### Add the package to your npm dependencies
-
-```
-npm install expo-emarsys-plugin
+```bash
+npm install "git+ssh://git@github.com/emartech/expo-emarsys-plugin.git#<version>" --save
 ```
 
-### Configure for Android
+---
 
+## Configuration
 
+1. Add the plugin to your `app.json` with your own values:
 
+```json
+"plugins": [
+  [
+    "expo-emarsys-plugin",
+    {
+      "applicationCode": <APPLICATION_CODE>,
+      "merchantId": <MERCHANT_ID>
+    }
+  ]
+]
+```
 
-### Configure for iOS
+2. Add your `google-services.json` file into the app’s assets folder.
+3. *(Optional)* Provide a custom Android **push notification icon**:  
+   - Place an image named **`mobile_engage_logo_icon.jpg`** inside the app’s `assets` folder.  
+   - During build, it will be copied into the correct Android resources directory (`res/drawable`).  
 
-Run `npx pod-install` after installing the npm package.
+---
 
-# Contributing
+## Build
 
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+Run prebuild to apply the changes:
+
+```bash
+npx expo prebuild
+```
+
+## Next Steps
+
+1. Install the **React Native Emarsys Wrapper** following the setup guide: [React Native Emarsys SDK – Setup](https://github.com/emartech/react-native-emarsys-sdk?tab=readme-ov-file#setup)
+
+2. Continue with the wrapper’s [documentation](https://github.com/emartech/react-native-emarsys-sdk/wiki#2-set-contact).

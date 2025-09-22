@@ -8,12 +8,13 @@ public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
 
     let infoPList = Bundle.main.infoDictionary
     let config = EMSConfig.make { build in
-      if let applicationCode = infoPList?["EMSApplicationCode"] as? String, applicationCode != "" {
+      if let applicationCode = StorageUtil.string(forKey: "EMSApplicationCode", withInfoPListFallback: true), applicationCode != "" {
         build.setMobileEngageApplicationCode(applicationCode)
       }
       if let merchantId = infoPList?["EMSMerchantId"] as? String, merchantId != "" {
         build.setMerchantId(merchantId)
       }
+      build.enableConsoleLogLevels([EMSLogLevel.basic, EMSLogLevel.error, EMSLogLevel.info, EMSLogLevel.debug])
     }
     Emarsys.setup(config: config)
 

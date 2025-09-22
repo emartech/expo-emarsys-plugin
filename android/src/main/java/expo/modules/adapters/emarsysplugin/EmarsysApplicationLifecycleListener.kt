@@ -8,14 +8,17 @@ import expo.modules.core.interfaces.ApplicationLifecycleListener
 import com.emarsys.Emarsys
 import com.emarsys.config.EmarsysConfig
 import com.emarsys.rnwrapper.RNEmarsysEventHandler
+import com.emarsys.rnwrapper.StorageUtil
 
 class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
   override fun onCreate(application: Application) {
     super.onCreate(application)
-    val appInfo: ApplicationInfo = application.packageManager
-      .getApplicationInfo(application.packageName, PackageManager.GET_META_DATA)
-    val metaData: Bundle = appInfo.metaData
-    val applicationCode: String? = metaData.getString("EMSApplicationCode")
+
+    val metaData: Bundle = application.packageManager
+      .getApplicationInfo(application.packageName, PackageManager.GET_META_DATA).metaData
+
+    var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "EMSApplicationCode", true)
+    applicationCode = if (applicationCode !== "") applicationCode else null
     val merchantId: String? = metaData.getString("EMSMerchantId")
 
     val config = EmarsysConfig(

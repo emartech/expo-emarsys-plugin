@@ -24,6 +24,7 @@ const withEmarsysInfoPlist: ConfigPlugin<EMSOptions> = (config, options) =>
     if (merchantId) {
       config.modResults.EMSMerchantId = merchantId;
     }
+
     return config;
   });
 

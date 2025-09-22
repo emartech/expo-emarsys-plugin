@@ -53,8 +53,10 @@ async function registerForPushNotificationsAsync() {
   }
 
   console.log('Getting device push token');
-  // trigger the native code to register the device 
-  await Notifications.getDevicePushTokenAsync(); // does not resolve to a token, but triggers the native code to register the device
+  let token = await Notifications.getDevicePushTokenAsync();
+  if (token.type !== 'ios' && token.data) { // on ios, it is called in AppDelegateSubscriber
+    Emarsys.push.setPushToken(token.data);
+  }
 }
 
 const styles = {

@@ -14,10 +14,12 @@ class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
   override fun onCreate(application: Application) {
     super.onCreate(application)
 
-    var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "applicationCode", true)
+    val metaData: Bundle = application.packageManager
+      .getApplicationInfo(application.packageName, PackageManager.GET_META_DATA).metaData
+
+    var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "EMSApplicationCode", true)
     applicationCode = if (applicationCode !== "") applicationCode else null
-    var merchantId = StorageUtil.getStringWithApplicationMetaDataFallback(application, "merchantId", true)
-    merchantId = if (merchantId !== "") merchantId else null
+    val merchantId: String? = metaData.getString("EMSMerchantId")
 
     val config = EmarsysConfig(
       application = application,

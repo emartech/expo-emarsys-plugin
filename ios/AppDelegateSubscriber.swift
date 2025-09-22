@@ -6,7 +6,7 @@ public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
 
   public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     let config = EMSConfig.make { build in
-      if let applicationCode = StorageUtil.string(forKey: "applicationCode", withInfoPListFallback: true), applicationCode != "" {
+      if let applicationCode = StorageUtil.string(forKey: "EMSApplicationCode", withInfoPListFallback: true), applicationCode != "" {
         build.setMobileEngageApplicationCode(applicationCode)
       }
       if let merchantId = StorageUtil.string(forKey: "merchantId", withInfoPListFallback: true), merchantId != "" {

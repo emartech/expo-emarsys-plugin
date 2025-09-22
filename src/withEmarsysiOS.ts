@@ -6,6 +6,7 @@ import {
   withPodfileProperties
 } from 'expo/config-plugins';
 import { EMSOptions } from './types';
+import { STORE_NAME } from './constants';
 
 const NOTIFICATION_SERVICE_TARGET = 'NotificationService';
 const NOTIFICATION_SERVICE_FILES = [
@@ -17,13 +18,14 @@ const withEmarsysInfoPlist: ConfigPlugin<EMSOptions> = (config, options) =>
   withInfoPlist(config, config => {
     const applicationCode = options.applicationCode;
     if (applicationCode) {
-      config.modResults.EMSApplicationCode = applicationCode;
+      config.modResults[`${STORE_NAME}.applicationCode`] = applicationCode;
     }
 
     const merchantId = options.merchantId;
     if (merchantId) {
-      config.modResults.EMSMerchantId = merchantId;
+      config.modResults[`${STORE_NAME}.merchantId`] = merchantId;
     }
+
     return config;
   });
 

@@ -6,6 +6,7 @@ import {
   withDangerousMod
 } from 'expo/config-plugins';
 import { EMSOptions } from './types';
+import { STORE_NAME } from './constants';
 import { addMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
 
 const DESUGARING_DEP =
@@ -99,10 +100,10 @@ const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =
     const app = applicationArray[0];
 
     if (options.applicationCode) {
-      addMetaData(app, 'EMSApplicationCode', options.applicationCode);
+      addMetaData(app, `${STORE_NAME}.applicationCode`, options.applicationCode);
     }
     if (options.merchantId) {
-      addMetaData(app, 'EMSMerchantId', options.merchantId);
+      addMetaData(app, `${STORE_NAME}.merchantId`, options.merchantId);
     }
 
     addEmarsysMessagingService(app);

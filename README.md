@@ -21,15 +21,21 @@ npm install "git+ssh://git@github.com/emartech/expo-emarsys-plugin.git#<version>
 1. Add the plugin to your `app.json` with your own values:
 
 ```json
-"plugins": [
-  [
-    "expo-emarsys-plugin",
-    {
-      "applicationCode": <APPLICATION_CODE>,
-      "merchantId": <MERCHANT_ID>
-    }
-  ]
-]
+{
+  "expo": {
+    ...
+    "plugins": [
+      [
+        "expo-emarsys-plugin",
+        {
+          "applicationCode": <APPLICATION_CODE>,
+          "merchantId": <MERCHANT_ID>
+        }
+      ]
+    ]
+    ...
+  }
+}
 ```
 
 2. Add your `google-services.json` file into the app’s assets folder.

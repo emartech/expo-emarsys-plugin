@@ -29,7 +29,7 @@
     "url": "https://github.com/emartech/expo-emarsys-plugin/issues"
   },
   "author": "Emarsys <g-gsuite-mobileengineers@emarsys.com> (https://github.com/emartech)",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "homepage": "https://github.com/emartech/expo-emarsys-plugin#readme",
   "devDependencies": {
     "@types/jest": "^30.0.0",

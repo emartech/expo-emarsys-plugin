@@ -10,10 +10,10 @@ const NOTIFICATION_SERVICE_FILES = [
   'NotificationService-Info.plist'
 ];
 
-export const withEmarsysXcodeProject: ConfigPlugin<EMSOptions> = (config, options) =>
+export const withEmarsysXcodeProject: ConfigPlugin<EMSOptions> = (config, _options) =>
   withXcodeProject(config, (config) => {
     // Notification Service Extension
-    if (!!config.modResults.pbxGroupByName(NOTIFICATION_SERVICE_TARGET)) {
+    if (config.modResults.pbxGroupByName(NOTIFICATION_SERVICE_TARGET)) {
       console.log(`${NOTIFICATION_SERVICE_TARGET} already exists`);
       return config;
     }

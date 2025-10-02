@@ -8,6 +8,7 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "lint": "expo-module lint",
+    "lint:all": "eslint src __tests__",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

@@ -10,7 +10,7 @@ const NOTIFICATION_SERVICE_FILES = [
   'NotificationService-Info.plist'
 ];
 
-export const withEmarsysDangerousMod: ConfigPlugin<EMSOptions> = (config, options) =>
+export const withEmarsysDangerousMod: ConfigPlugin<EMSOptions> = (config, _options) =>
   withDangerousMod(config, [
     'ios',
     (config) => {

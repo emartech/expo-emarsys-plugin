@@ -18,14 +18,14 @@ type ConfigWithModResults = ExpoConfig & {
 
 describe('withEmarsysAndroid', () => {
   let mockConfig: ExpoConfig;
-  let mockOptions: EMSOptions;
+  let _mockOptions: EMSOptions;
 
   beforeEach(() => {
     mockConfig = {
       name: 'test-app',
       slug: 'test-app',
     };
-    mockOptions = {
+    _mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
     };

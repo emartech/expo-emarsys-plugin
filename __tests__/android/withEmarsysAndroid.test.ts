@@ -5,15 +5,15 @@ import {
 import { EMSOptions } from '../../src/types';
 
 describe('withEmarsysAndroid', () => {
-  let mockConfig: ExpoConfig;
-  let mockOptions: EMSOptions;
+  let _mockConfig: ExpoConfig;
+  let _mockOptions: EMSOptions;
 
   beforeEach(() => {
-    mockConfig = {
+    _mockConfig = {
       name: 'test-app',
       slug: 'test-app',
     };
-    mockOptions = {
+    _mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
     };
@@ -30,8 +30,8 @@ describe('withEmarsysAndroid', () => {
 
   it('should work with valid option types', () => {
     // Test that options have correct types
-    expect(typeof mockOptions.applicationCode).toBe('string');
-    expect(typeof mockOptions.merchantId).toBe('string');
+    expect(typeof _mockOptions.applicationCode).toBe('string');
+    expect(typeof _mockOptions.merchantId).toBe('string');
     
     // Test that function exists
     expect(typeof withEmarsysAndroid).toBe('function');

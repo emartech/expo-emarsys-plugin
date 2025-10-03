@@ -7,7 +7,7 @@ import { addMetaData } from './withEmarsysAndroidHelpers';
 
 const MOBILE_ENGAGE_LOGO_ICON = 'mobile_engage_logo_icon';
 
-export const withPushMessageLogoIcon: ConfigPlugin = (config) => {
+export const withEmarsysPushMessageLogoIcon: ConfigPlugin = (config) => {
   config = withDangerousMod(config, [
     'android',
     async config => {

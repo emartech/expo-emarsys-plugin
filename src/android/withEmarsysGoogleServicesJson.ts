@@ -4,7 +4,7 @@ import {
 } from 'expo/config-plugins';
 
 
-export const withGoogleServicesJson: ConfigPlugin = (config) => {
+export const withEmarsysGoogleServicesJson: ConfigPlugin = (config) => {
   return withDangerousMod(config, [
     'android',
     async config => {

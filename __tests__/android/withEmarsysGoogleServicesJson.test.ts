@@ -1,5 +1,5 @@
 import { ExpoConfig } from 'expo/config';
-import { withGoogleServicesJson } from '../../src/android/withGoogleServicesJson';
+import { withEmarsysGoogleServicesJson } from '../../src/android/withEmarsysGoogleServicesJson';
 
 // Mock the expo/config-plugins module
 jest.mock('expo/config-plugins', () => ({
@@ -64,11 +64,11 @@ describe('withGoogleServicesJson', () => {
   });
 
   it('should be a function', () => {
-    expect(typeof withGoogleServicesJson).toBe('function');
+    expect(typeof withEmarsysGoogleServicesJson).toBe('function');
   });
 
   it('should accept only config parameter', () => {
-    expect(withGoogleServicesJson.length).toBe(1);
+    expect(withEmarsysGoogleServicesJson.length).toBe(1);
   });
 
   it('should copy google-services.json when source file exists', async () => {
@@ -78,7 +78,7 @@ describe('withGoogleServicesJson', () => {
       .mockReturnValueOnce('/test/project/android/app/google-services.json'); // dest path
     mockPath.dirname.mockReturnValue('/test/project/android/app');
 
-    const result = await withGoogleServicesJson(mockConfig);
+    const result = await withEmarsysGoogleServicesJson(mockConfig);
 
     expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/google-services.json');
     expect(mockFs.mkdirSync).toHaveBeenCalledWith('/test/project/android/app', { recursive: true });
@@ -95,7 +95,7 @@ describe('withGoogleServicesJson', () => {
     mockPath.join.mockReturnValueOnce('/test/project/assets/google-services.json');
 
     await expect(async () => {
-      await withGoogleServicesJson(mockConfig);
+      await withEmarsysGoogleServicesJson(mockConfig);
     }).rejects.toThrow('google-services.json not found in assets. Please put your file at: /test/project/assets/google-services.json');
 
     expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/google-services.json');
@@ -111,7 +111,7 @@ describe('withGoogleServicesJson', () => {
       .mockReturnValueOnce('/test/project/android/app/google-services.json');
     mockPath.dirname.mockReturnValue('/test/project/android/app');
 
-    await withGoogleServicesJson(mockConfig);
+    await withEmarsysGoogleServicesJson(mockConfig);
 
     expect(mockFs.mkdirSync).toHaveBeenCalledWith('/test/project/android/app', { recursive: true });
   });
@@ -130,7 +130,7 @@ describe('withGoogleServicesJson', () => {
       .mockReturnValueOnce('/different/project/path/android/app/google-services.json');
     mockPath.dirname.mockReturnValue('/different/project/path/android/app');
 
-    await withGoogleServicesJson(configWithDifferentRoot);
+    await withEmarsysGoogleServicesJson(configWithDifferentRoot);
 
     expect(mockPath.join).toHaveBeenCalledWith('/different/project/path', 'assets', 'google-services.json');
     expect(mockPath.join).toHaveBeenCalledWith('/different/project/path', 'android', 'app', 'google-services.json');
@@ -146,7 +146,7 @@ describe('withGoogleServicesJson', () => {
       .mockReturnValueOnce('/test/project/assets/google-services.json')
       .mockReturnValueOnce('/test/project/android/app/google-services.json');
 
-    await withGoogleServicesJson(mockConfig);
+    await withEmarsysGoogleServicesJson(mockConfig);
 
     expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'assets', 'google-services.json');
     expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'android', 'app', 'google-services.json');
@@ -159,7 +159,7 @@ describe('withGoogleServicesJson', () => {
       .mockReturnValueOnce('/test/project/android/app/google-services.json');
     mockPath.dirname.mockReturnValue('/test/project/android/app');
 
-    const result = await withGoogleServicesJson(mockConfig);
+    const result = await withEmarsysGoogleServicesJson(mockConfig);
 
     expect(result).toBe(mockConfig);
     expect(result.name).toBe('test-app');
@@ -174,7 +174,7 @@ describe('withGoogleServicesJson', () => {
 
     // This should fail when trying to access config.modRequest.projectRoot
     await expect(async () => {
-      await withGoogleServicesJson(configWithoutModRequest);
+      await withEmarsysGoogleServicesJson(configWithoutModRequest);
     }).rejects.toThrow('Cannot read properties of undefined (reading \'projectRoot\')');
   });
 
@@ -191,7 +191,7 @@ describe('withGoogleServicesJson', () => {
       };
 
       await expect(async () => {
-        await withGoogleServicesJson(customConfig);
+        await withEmarsysGoogleServicesJson(customConfig);
       }).rejects.toThrow('google-services.json not found in assets. Please put your file at: /custom/path/assets/google-services.json');
     });
 
@@ -206,7 +206,7 @@ describe('withGoogleServicesJson', () => {
       mockPath.dirname.mockReturnValue('/test/project/android/app');
 
       await expect(async () => {
-        await withGoogleServicesJson(mockConfig);
+        await withEmarsysGoogleServicesJson(mockConfig);
       }).rejects.toThrow('Permission denied');
     });
 
@@ -221,7 +221,7 @@ describe('withGoogleServicesJson', () => {
       mockPath.dirname.mockReturnValue('/test/project/android/app');
 
       await expect(async () => {
-        await withGoogleServicesJson(mockConfig);
+        await withEmarsysGoogleServicesJson(mockConfig);
       }).rejects.toThrow('Cannot create directory');
     });
   });
@@ -230,15 +230,15 @@ describe('withGoogleServicesJson', () => {
     it('should call withDangerousMod with android platform', () => {
       const { withDangerousMod } = require('expo/config-plugins');
       
-      withGoogleServicesJson(mockConfig);
+      withEmarsysGoogleServicesJson(mockConfig);
 
       expect(withDangerousMod).toHaveBeenCalledWith(mockConfig, ['android', expect.any(Function)]);
     });
 
     it('should be a ConfigPlugin', () => {
       // Test that it's a proper ConfigPlugin by checking its signature
-      expect(typeof withGoogleServicesJson).toBe('function');
-      expect(withGoogleServicesJson.length).toBe(1);
+      expect(typeof withEmarsysGoogleServicesJson).toBe('function');
+      expect(withEmarsysGoogleServicesJson.length).toBe(1);
     });
   });
 });

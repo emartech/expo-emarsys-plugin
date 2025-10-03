@@ -1,18 +1,12 @@
-import { ExpoConfig } from 'expo/config';
 import { 
   withEmarsysAndroid
 } from '../../src/android/withEmarsysAndroid';
 import { EMSOptions } from '../../src/types';
 
 describe('withEmarsysAndroid', () => {
-  let _mockConfig: ExpoConfig;
   let _mockOptions: EMSOptions;
 
   beforeEach(() => {
-    _mockConfig = {
-      name: 'test-app',
-      slug: 'test-app',
-    };
     _mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',

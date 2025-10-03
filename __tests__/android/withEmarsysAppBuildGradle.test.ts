@@ -1,6 +1,7 @@
 import { ExpoConfig } from 'expo/config';
-import { EMSOptions } from '../../src/types';
-import { withEmarsysAppBuildGradle } from '../../src/android/withEmarsysAppBuildGradle';
+import {
+  withEmarsysAppBuildGradle
+} from '../../src/android/withEmarsysAppBuildGradle';
 
 // Mock the expo/config-plugins module
 jest.mock('expo/config-plugins', () => ({
@@ -18,16 +19,11 @@ type ConfigWithModResults = ExpoConfig & {
 
 describe('withEmarsysAppBuildGradle', () => {
   let mockConfig: ExpoConfig;
-  let _mockOptions: EMSOptions;
 
   beforeEach(() => {
     mockConfig = {
       name: 'test-app',
       slug: 'test-app',
-    };
-    _mockOptions = {
-      applicationCode: 'TEST_APP_CODE',
-      merchantId: 'TEST_MERCHANT_ID',
     };
     jest.clearAllMocks();
   });

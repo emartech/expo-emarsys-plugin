@@ -12,7 +12,9 @@ public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
       if let merchantId = StorageUtil.string(forKey: "merchantId", withInfoPListFallback: true), merchantId != "" {
         build.setMerchantId(merchantId)
       }
-      build.enableConsoleLogLevels([EMSLogLevel.basic, EMSLogLevel.error, EMSLogLevel.info, EMSLogLevel.debug])
+      if (infoPList?["EMSEnableConsoleLogging"] as? Bool) ?? false {
+        build.enableConsoleLogLevels([EMSLogLevel.basic, EMSLogLevel.error, EMSLogLevel.info, EMSLogLevel.debug])
+      }
     }
     Emarsys.setup(config: config)
 

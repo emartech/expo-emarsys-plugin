@@ -15,5 +15,10 @@ export const withEmarsysInfoPlist: ConfigPlugin<EMSOptions> = (config, options) 
     if (merchantId) {
       config.modResults.EMSMerchantId = merchantId;
     }
+
+    const enableConsoleLogging = options.enableConsoleLogging;
+    if (enableConsoleLogging) {
+      config.modResults.EMSEnableConsoleLogging = enableConsoleLogging;
+    }
     return config;
   });

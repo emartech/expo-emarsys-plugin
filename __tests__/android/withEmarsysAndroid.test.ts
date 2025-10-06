@@ -10,6 +10,7 @@ describe('withEmarsysAndroid', () => {
     _mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
+      enableConsoleLogging: true,
     };
     jest.clearAllMocks();
   });
@@ -26,6 +27,7 @@ describe('withEmarsysAndroid', () => {
     // Test that options have correct types
     expect(typeof _mockOptions.applicationCode).toBe('string');
     expect(typeof _mockOptions.merchantId).toBe('string');
+    expect(typeof _mockOptions.enableConsoleLogging).toBe('boolean');
     
     // Test that function exists
     expect(typeof withEmarsysAndroid).toBe('function');

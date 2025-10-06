@@ -1,11 +1,11 @@
-import { addMetaData, addEmarsysMessagingService } from '../../src/android/withEmarsysAndroidHelpers';
+import { setMetaData, addEmarsysMessagingService } from '../../src/android/withEmarsysAndroidHelpers';
 
 describe('withEmarsysAndroidHelpers', () => {
-  describe('addMetaData', () => {
+  describe('setMetaData', () => {
     it('should add meta-data to empty application', () => {
       const app: any = {};
       
-      addMetaData(app, 'TEST_NAME', 'TEST_VALUE');
+      setMetaData(app, 'TEST_NAME', 'TEST_VALUE');
       
       expect(app['meta-data']).toHaveLength(1);
       expect(app['meta-data'][0]).toEqual({
@@ -28,7 +28,7 @@ describe('withEmarsysAndroidHelpers', () => {
         ]
       };
       
-      addMetaData(app, 'NEW_NAME', 'NEW_VALUE');
+      setMetaData(app, 'NEW_NAME', 'NEW_VALUE');
       
       expect(app['meta-data']).toHaveLength(2);
       expect(app['meta-data'][1]).toEqual({
@@ -39,26 +39,26 @@ describe('withEmarsysAndroidHelpers', () => {
       });
     });
 
-    it('should not add duplicate meta-data entries', () => {
+    it('should update existing meta-data entries', () => {
       const app: any = {
         'meta-data': [
           {
             $: {
               'android:name': 'EXISTING_NAME',
-              'android:value': 'EXISTING_VALUE'
+              'android:value': 'OLD_VALUE'
             }
           }
         ]
       };
       
-      // Try to add the same name again
-      addMetaData(app, 'EXISTING_NAME', 'NEW_VALUE');
+      // Update the existing entry
+      setMetaData(app, 'EXISTING_NAME', 'NEW_VALUE');
       
       expect(app['meta-data']).toHaveLength(1);
       expect(app['meta-data'][0]).toEqual({
         $: {
           'android:name': 'EXISTING_NAME',
-          'android:value': 'EXISTING_VALUE'
+          'android:value': 'NEW_VALUE'
         }
       });
     });
@@ -76,7 +76,7 @@ describe('withEmarsysAndroidHelpers', () => {
         ]
       };
       
-      addMetaData(app, 'NEW_NAME', 'NEW_VALUE');
+      setMetaData(app, 'NEW_NAME', 'NEW_VALUE');
       
       expect(app['meta-data']).toHaveLength(3);
       expect(app['meta-data'][2]).toEqual({
@@ -90,7 +90,7 @@ describe('withEmarsysAndroidHelpers', () => {
     it('should add EMSApplicationCode correctly', () => {
       const app: any = {};
       
-      addMetaData(app, 'EMSApplicationCode', 'TEST123');
+      setMetaData(app, 'EMSApplicationCode', 'TEST123');
       
       expect(app['meta-data'][0].$['android:name']).toBe('EMSApplicationCode');
       expect(app['meta-data'][0].$['android:value']).toBe('TEST123');
@@ -99,10 +99,174 @@ describe('withEmarsysAndroidHelpers', () => {
     it('should add EMSMerchantId correctly', () => {
       const app: any = {};
       
-      addMetaData(app, 'EMSMerchantId', 'MERCHANT456');
+      setMetaData(app, 'EMSMerchantId', 'MERCHANT456');
       
       expect(app['meta-data'][0].$['android:name']).toBe('EMSMerchantId');
       expect(app['meta-data'][0].$['android:value']).toBe('MERCHANT456');
+    });
+  });
+
+  describe('setMetaData advanced scenarios', () => {
+    it('should add meta-data to empty application', () => {
+      const app: any = {};
+      
+      setMetaData(app, 'TEST_NAME', 'TEST_VALUE');
+      
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0]).toEqual({
+        $: {
+          'android:name': 'TEST_NAME',
+          'android:value': 'TEST_VALUE'
+        }
+      });
+    });
+
+    it('should add meta-data to existing meta-data array', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'EXISTING_NAME',
+              'android:value': 'EXISTING_VALUE'
+            }
+          }
+        ]
+      };
+      
+      setMetaData(app, 'NEW_NAME', 'NEW_VALUE');
+      
+      expect(app['meta-data']).toHaveLength(2);
+      expect(app['meta-data'][1]).toEqual({
+        $: {
+          'android:name': 'NEW_NAME',
+          'android:value': 'NEW_VALUE'
+        }
+      });
+    });
+
+    it('should update existing meta-data entry', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'EXISTING_NAME',
+              'android:value': 'OLD_VALUE'
+            }
+          }
+        ]
+      };
+      
+      setMetaData(app, 'EXISTING_NAME', 'NEW_VALUE');
+      
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0]).toEqual({
+        $: {
+          'android:name': 'EXISTING_NAME',
+          'android:value': 'NEW_VALUE'
+        }
+      });
+    });
+
+    it('should update existing entry among multiple meta-data entries', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'FIRST_NAME',
+              'android:value': 'FIRST_VALUE'
+            }
+          },
+          {
+            $: {
+              'android:name': 'EXISTING_NAME',
+              'android:value': 'OLD_VALUE'
+            }
+          },
+          {
+            $: {
+              'android:name': 'THIRD_NAME',
+              'android:value': 'THIRD_VALUE'
+            }
+          }
+        ]
+      };
+      
+      setMetaData(app, 'EXISTING_NAME', 'NEW_VALUE');
+      
+      expect(app['meta-data']).toHaveLength(3);
+      expect(app['meta-data'][0]).toEqual({
+        $: {
+          'android:name': 'FIRST_NAME',
+          'android:value': 'FIRST_VALUE'
+        }
+      });
+      expect(app['meta-data'][1]).toEqual({
+        $: {
+          'android:name': 'EXISTING_NAME',
+          'android:value': 'NEW_VALUE'
+        }
+      });
+      expect(app['meta-data'][2]).toEqual({
+        $: {
+          'android:name': 'THIRD_NAME',
+          'android:value': 'THIRD_VALUE'
+        }
+      });
+    });
+
+    it('should handle meta-data entries without valid $ property', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            // Invalid entry without $ property
+            'android:name': 'INVALID_ENTRY'
+          },
+          {
+            $: {
+              'android:name': 'VALID_ENTRY',
+              'android:value': 'VALID_VALUE'
+            }
+          }
+        ]
+      };
+      
+      setMetaData(app, 'NEW_NAME', 'NEW_VALUE');
+      
+      expect(app['meta-data']).toHaveLength(3);
+      expect(app['meta-data'][2]).toEqual({
+        $: {
+          'android:name': 'NEW_NAME',
+          'android:value': 'NEW_VALUE'
+        }
+      });
+    });
+
+    it('should add EMSEnableConsoleLogging correctly', () => {
+      const app: any = {};
+      
+      setMetaData(app, 'EMSEnableConsoleLogging', 'true');
+      
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSEnableConsoleLogging');
+      expect(app['meta-data'][0].$['android:value']).toBe('true');
+    });
+
+    it('should update EMSEnableConsoleLogging correctly', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'EMSEnableConsoleLogging',
+              'android:value': 'false'
+            }
+          }
+        ]
+      };
+      
+      setMetaData(app, 'EMSEnableConsoleLogging', 'true');
+      
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSEnableConsoleLogging');
+      expect(app['meta-data'][0].$['android:value']).toBe('true');
     });
   });
 

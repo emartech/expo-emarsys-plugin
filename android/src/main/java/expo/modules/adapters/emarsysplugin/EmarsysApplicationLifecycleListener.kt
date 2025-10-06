@@ -20,12 +20,13 @@ class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
     var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "EMSApplicationCode", true)
     applicationCode = if (applicationCode !== "") applicationCode else null
     val merchantId: String? = metaData.getString("EMSMerchantId")
+    val enableConsoleLogging: Boolean = metaData.getString("EMSEnableConsoleLogging")?.toBoolean() ?: false
 
     val config = EmarsysConfig(
       application = application,
       applicationCode = applicationCode,
       merchantId = merchantId,
-      verboseConsoleLoggingEnabled = true)
+      verboseConsoleLoggingEnabled = enableConsoleLogging)
     Emarsys.setup(config)
 
     val eventHandler = RNEmarsysEventHandler.getInstance()

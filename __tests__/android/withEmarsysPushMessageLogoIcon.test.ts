@@ -30,7 +30,7 @@ jest.mock('expo/config-plugins', () => ({
 
 // Mock the helper function
 jest.mock('../../src/android/withEmarsysAndroidHelpers', () => ({
-  addMetaData: jest.fn(),
+  setMetaData: jest.fn(),
 }));
 
 // Mock file system operations
@@ -78,7 +78,7 @@ type ConfigWithModRequest = ExpoConfig & {
 
 describe('withPushMessageLogoIcon', () => {
   let mockConfig: ConfigWithModRequest;
-  const { addMetaData } = require('../../src/android/withEmarsysAndroidHelpers');
+  const { setMetaData } = require('../../src/android/withEmarsysAndroidHelpers');
 
   beforeEach(() => {
     mockConfig = {
@@ -101,7 +101,7 @@ describe('withPushMessageLogoIcon', () => {
     mockFs.copyFileSync.mockImplementation(() => {});
     mockPath.join.mockImplementation((...args) => args.join('/'));
     mockPath.dirname.mockImplementation((filePath) => filePath.split('/').slice(0, -1).join('/'));
-    addMetaData.mockImplementation(() => {});
+    setMetaData.mockImplementation(() => {});
   });
 
   it('should be a function', () => {
@@ -170,7 +170,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(addMetaData).toHaveBeenCalledWith(
+      expect(setMetaData).toHaveBeenCalledWith(
         mockConfig.modResults?.manifest.application[0],
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'
@@ -189,7 +189,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(addMetaData).not.toHaveBeenCalled();
+      expect(setMetaData).not.toHaveBeenCalled();
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping AndroidManifest update.');
       // Function should return some config object
       expect(result).toBeDefined();
@@ -229,7 +229,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(configWithEmptyApp);
 
-      expect(addMetaData).not.toHaveBeenCalled();
+      expect(setMetaData).not.toHaveBeenCalled();
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -268,7 +268,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(configWithNonArrayApp);
 
-      expect(addMetaData).not.toHaveBeenCalled();
+      expect(setMetaData).not.toHaveBeenCalled();
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -305,7 +305,7 @@ describe('withPushMessageLogoIcon', () => {
       expect(mockConsoleLog).toHaveBeenCalledWith('Copied mobile_engage_logo_icon to /test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg');
       
       // Verify manifest modifications
-      expect(addMetaData).toHaveBeenCalledWith(
+      expect(setMetaData).toHaveBeenCalledWith(
         mockConfig.modResults?.manifest.application[0],
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'
@@ -328,7 +328,7 @@ describe('withPushMessageLogoIcon', () => {
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping copy.');
       
       // Verify manifest modifications were skipped
-      expect(addMetaData).not.toHaveBeenCalled();
+      expect(setMetaData).not.toHaveBeenCalled();
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping AndroidManifest update.');
       
       // Function should return some config object
@@ -358,7 +358,7 @@ describe('withPushMessageLogoIcon', () => {
 
       await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(addMetaData).toHaveBeenCalledWith(
+      expect(setMetaData).toHaveBeenCalledWith(
         expect.any(Object),
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'

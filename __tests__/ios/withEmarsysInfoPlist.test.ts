@@ -15,6 +15,7 @@ describe('withEmarsysInfoPlist', () => {
       [key: string]: any;
       EMSApplicationCode?: string;
       EMSMerchantId?: string;
+      EMSEnableConsoleLogging?: boolean;
     };
   };
 
@@ -31,6 +32,7 @@ describe('withEmarsysInfoPlist', () => {
     mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
+      enableConsoleLogging: true,
     };
 
     jest.clearAllMocks();
@@ -48,6 +50,7 @@ describe('withEmarsysInfoPlist', () => {
     // Test that options have correct types
     expect(typeof mockOptions.applicationCode).toBe('string');
     expect(typeof mockOptions.merchantId).toBe('string');
+    expect(typeof mockOptions.enableConsoleLogging).toBe('boolean');
     
     // Test that function exists
     expect(typeof withEmarsysInfoPlist).toBe('function');
@@ -57,16 +60,21 @@ describe('withEmarsysInfoPlist', () => {
     // Test that the function exists and can handle empty options type
     expect(typeof withEmarsysInfoPlist).toBe('function');
     
-    // Test that empty options can be created
-    const emptyOptions = {} as EMSOptions;
-    expect(typeof emptyOptions).toBe('object');
+    // Test that minimal options can be created
+    const minimalOptions = {
+      applicationCode: '',
+      merchantId: '',
+      enableConsoleLogging: false
+    } as EMSOptions;
+    expect(typeof minimalOptions).toBe('object');
   });
 
   describe('Info.plist modifications', () => {
     it('should add EMSApplicationCode when applicationCode is provided', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
         applicationCode: 'TEST123',
-        merchantId: 'MERCHANT456'
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false
       }) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBe('TEST123');
@@ -75,7 +83,8 @@ describe('withEmarsysInfoPlist', () => {
     it('should add EMSMerchantId when merchantId is provided', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
         applicationCode: 'TEST123',
-        merchantId: 'MERCHANT456'
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false
       }) as InfoPlistConfig;
 
       expect(result.modResults.EMSMerchantId).toBe('MERCHANT456');
@@ -86,11 +95,14 @@ describe('withEmarsysInfoPlist', () => {
 
       expect(result.modResults.EMSApplicationCode).toBe('TEST_APP_CODE');
       expect(result.modResults.EMSMerchantId).toBe('TEST_MERCHANT_ID');
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
     });
 
     it('should not add EMSApplicationCode when applicationCode is not provided', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
-        merchantId: 'MERCHANT456'
+        applicationCode: '',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false
       } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBeUndefined();
@@ -99,7 +111,9 @@ describe('withEmarsysInfoPlist', () => {
 
     it('should not add EMSMerchantId when merchantId is not provided', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
-        applicationCode: 'TEST123'
+        applicationCode: 'TEST123',
+        merchantId: '',
+        enableConsoleLogging: false
       } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBe('TEST123');
@@ -107,16 +121,22 @@ describe('withEmarsysInfoPlist', () => {
     });
 
     it('should not add any keys when both options are not provided', () => {
-      const result = withEmarsysInfoPlist(mockConfig, {} as EMSOptions) as InfoPlistConfig;
+      const result = withEmarsysInfoPlist(mockConfig, {
+        applicationCode: '',
+        merchantId: '',
+        enableConsoleLogging: false
+      } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBeUndefined();
       expect(result.modResults.EMSMerchantId).toBeUndefined();
+      expect(result.modResults.EMSEnableConsoleLogging).toBeUndefined();
     });
 
     it('should not add EMSApplicationCode when applicationCode is empty string', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
         applicationCode: '',
-        merchantId: 'MERCHANT456'
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false
       } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBeUndefined();
@@ -126,7 +146,8 @@ describe('withEmarsysInfoPlist', () => {
     it('should not add EMSMerchantId when merchantId is empty string', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
         applicationCode: 'TEST123',
-        merchantId: ''
+        merchantId: '',
+        enableConsoleLogging: false
       } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBe('TEST123');
@@ -136,11 +157,13 @@ describe('withEmarsysInfoPlist', () => {
     it('should not add keys when both options are empty strings', () => {
       const result = withEmarsysInfoPlist(mockConfig, {
         applicationCode: '',
-        merchantId: ''
+        merchantId: '',
+        enableConsoleLogging: false
       } as EMSOptions) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBeUndefined();
       expect(result.modResults.EMSMerchantId).toBeUndefined();
+      expect(result.modResults.EMSEnableConsoleLogging).toBeUndefined();
     });
 
     it('should preserve existing modResults properties', () => {
@@ -160,6 +183,7 @@ describe('withEmarsysInfoPlist', () => {
       expect(result.modResults.SomeOtherKey).toBe('SomeValue');
       expect(result.modResults.EMSApplicationCode).toBe('TEST_APP_CODE');
       expect(result.modResults.EMSMerchantId).toBe('TEST_MERCHANT_ID');
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
     });
 
     it('should overwrite existing EMSApplicationCode when provided', () => {
@@ -173,11 +197,65 @@ describe('withEmarsysInfoPlist', () => {
 
       const result = withEmarsysInfoPlist(configWithExistingEMS, {
         applicationCode: 'NEW_CODE',
-        merchantId: 'NEW_MERCHANT'
+        merchantId: 'NEW_MERCHANT',
+        enableConsoleLogging: true
       }) as InfoPlistConfig;
 
       expect(result.modResults.EMSApplicationCode).toBe('NEW_CODE');
       expect(result.modResults.EMSMerchantId).toBe('NEW_MERCHANT');
+    });
+
+    it('should add EMSEnableConsoleLogging when enableConsoleLogging is true', () => {
+      const result = withEmarsysInfoPlist(mockConfig, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: true
+      }) as InfoPlistConfig;
+
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
+    });
+
+    it('should not add EMSEnableConsoleLogging when enableConsoleLogging is false', () => {
+      const result = withEmarsysInfoPlist(mockConfig, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false
+      }) as InfoPlistConfig;
+
+      expect(result.modResults.EMSEnableConsoleLogging).toBeUndefined();
+    });
+
+    it('should work with only enableConsoleLogging set to true', () => {
+      const result = withEmarsysInfoPlist(mockConfig, {
+        applicationCode: '',
+        merchantId: '',
+        enableConsoleLogging: true
+      }) as InfoPlistConfig;
+
+      expect(result.modResults.EMSApplicationCode).toBeUndefined();
+      expect(result.modResults.EMSMerchantId).toBeUndefined();
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
+    });
+
+    it('should overwrite existing EMSEnableConsoleLogging when provided', () => {
+      const configWithExistingEMS: InfoPlistConfig = {
+        ...mockConfig,
+        modResults: {
+          EMSApplicationCode: 'OLD_CODE',
+          EMSMerchantId: 'OLD_MERCHANT',
+          EMSEnableConsoleLogging: false
+        }
+      };
+
+      const result = withEmarsysInfoPlist(configWithExistingEMS, {
+        applicationCode: 'NEW_CODE',
+        merchantId: 'NEW_MERCHANT',
+        enableConsoleLogging: true
+      }) as InfoPlistConfig;
+
+      expect(result.modResults.EMSApplicationCode).toBe('NEW_CODE');
+      expect(result.modResults.EMSMerchantId).toBe('NEW_MERCHANT');
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
     });
   });
 
@@ -202,6 +280,7 @@ describe('withEmarsysInfoPlist', () => {
       expect(result.name).toBe('minimal-app');
       expect(result.modResults.EMSApplicationCode).toBe('TEST_APP_CODE');
       expect(result.modResults.EMSMerchantId).toBe('TEST_MERCHANT_ID');
+      expect(result.modResults.EMSEnableConsoleLogging).toBe(true);
     });
 
     it('should throw when config is missing modResults', () => {

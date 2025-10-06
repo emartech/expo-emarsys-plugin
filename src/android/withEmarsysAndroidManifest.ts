@@ -3,7 +3,7 @@ import {
   withAndroidManifest
 } from 'expo/config-plugins';
 import { EMSOptions } from '../types';
-import { addMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
+import { setMetaData, addEmarsysMessagingService } from './withEmarsysAndroidHelpers';
 
 export const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, options) =>
   withAndroidManifest(config, config => {
@@ -14,10 +14,13 @@ export const withEmarsysAndroidManifest: ConfigPlugin<EMSOptions> = (config, opt
     const app = applicationArray[0];
 
     if (options.applicationCode) {
-      addMetaData(app, 'EMSApplicationCode', options.applicationCode);
+      setMetaData(app, 'EMSApplicationCode', options.applicationCode);
     }
     if (options.merchantId) {
-      addMetaData(app, 'EMSMerchantId', options.merchantId);
+      setMetaData(app, 'EMSMerchantId', options.merchantId);
+    }
+    if (options.enableConsoleLogging) {
+      setMetaData(app, 'EMSEnableConsoleLogging', 'true');
     }
 
     addEmarsysMessagingService(app);

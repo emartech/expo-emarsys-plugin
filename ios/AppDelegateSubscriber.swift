@@ -5,15 +5,14 @@ import RNEmarsysWrapper
 public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
 
   public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-
-    let infoPList = Bundle.main.infoDictionary
     let config = EMSConfig.make { build in
-      if let applicationCode = infoPList?["EMSApplicationCode"] as? String, applicationCode != "" {
+      if let applicationCode = StorageUtil.string(forKey: "applicationCode", withInfoPListFallback: true), applicationCode != "" {
         build.setMobileEngageApplicationCode(applicationCode)
       }
-      if let merchantId = infoPList?["EMSMerchantId"] as? String, merchantId != "" {
+      if let merchantId = StorageUtil.string(forKey: "merchantId", withInfoPListFallback: true), merchantId != "" {
         build.setMerchantId(merchantId)
       }
+      build.enableConsoleLogLevels([EMSLogLevel.basic, EMSLogLevel.error, EMSLogLevel.info, EMSLogLevel.debug])
     }
     Emarsys.setup(config: config)
 

@@ -104,6 +104,50 @@ describe('withEmarsysAndroidHelpers', () => {
       expect(app['meta-data'][0].$['android:name']).toBe('EMSMerchantId');
       expect(app['meta-data'][0].$['android:value']).toBe('MERCHANT456');
     });
+
+    it('should handle array values by joining them with commas', () => {
+      const app: any = {};
+      
+      setMetaData(app, 'EMSSharedPackageNames', ['com.example.app1', 'com.example.app2', 'com.example.app3']);
+      
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSSharedPackageNames');
+      expect(app['meta-data'][0].$['android:value']).toBe('com.example.app1,com.example.app2,com.example.app3');
+    });
+
+    it('should handle single element array correctly', () => {
+      const app: any = {};
+      
+      setMetaData(app, 'EMSSharedPackageNames', ['com.example.app']);
+      
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSSharedPackageNames');
+      expect(app['meta-data'][0].$['android:value']).toBe('com.example.app');
+    });
+
+    it('should handle empty array correctly', () => {
+      const app: any = {};
+      
+      setMetaData(app, 'EMSSharedPackageNames', []);
+      
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSSharedPackageNames');
+      expect(app['meta-data'][0].$['android:value']).toBe('');
+    });
+
+    it('should update existing array values correctly', () => {
+      const app: any = {
+        'meta-data': [{
+          $: {
+            'android:name': 'EMSSharedPackageNames',
+            'android:value': 'old.package.name'
+          }
+        }]
+      };
+      
+      setMetaData(app, 'EMSSharedPackageNames', ['new.package.one', 'new.package.two']);
+      
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0].$['android:name']).toBe('EMSSharedPackageNames');
+      expect(app['meta-data'][0].$['android:value']).toBe('new.package.one,new.package.two');
+    });
   });
 
   describe('setMetaData advanced scenarios', () => {

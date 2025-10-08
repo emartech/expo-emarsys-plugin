@@ -36,7 +36,10 @@
         {
           "applicationCode": "EMSE7-A1D58",
           "merchantId": "102F6519FC312033",
-          "enableConsoleLogging": true
+          "enableConsoleLogging": true,
+          "androidSharedPackageNames": ["expo.modules.emarsysplugin.example"],
+          "androidSharedSecret": "emsSecret",
+          "iosSharedKeychainAccessGroup": "4J5FXBB97U.com.ems.EmarsysShared"
         }
       ]
     ]

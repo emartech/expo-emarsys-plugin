@@ -17,16 +17,25 @@ class EmarsysApplicationLifecycleListener(): ApplicationLifecycleListener {
     val metaData: Bundle = application.packageManager
       .getApplicationInfo(application.packageName, PackageManager.GET_META_DATA).metaData
 
-    var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "EMSApplicationCode", true)
+    var applicationCode = StorageUtil.getStringWithApplicationMetaDataFallback(application, "applicationCode", true)
     applicationCode = if (applicationCode !== "") applicationCode else null
-    val merchantId: String? = metaData.getString("EMSMerchantId")
-    val enableConsoleLogging: Boolean = metaData.getString("EMSEnableConsoleLogging")?.toBoolean() ?: false
+    var merchantId = StorageUtil.getStringWithApplicationMetaDataFallback(application, "merchantId", true)
+    merchantId = if (merchantId !== "") merchantId else null
+
+    val enableConsoleLogging: Boolean = metaData.getString("com.emarsys.rnwrapper.enableConsoleLogging")?.toBoolean() ?: false
+    
+    val sharedPackageNamesString: String? = metaData.getString("com.emarsys.rnwrapper.sharedPackageNames")
+    val sharedSecret: String? = metaData.getString("com.emarsys.rnwrapper.sharedSecret")
+
+    val sharedPackageNames: List<String> = EmarsysUtils.parseCommaSeparatedList(sharedPackageNamesString)
 
     val config = EmarsysConfig(
       application = application,
       applicationCode = applicationCode,
       merchantId = merchantId,
-      verboseConsoleLoggingEnabled = enableConsoleLogging)
+      verboseConsoleLoggingEnabled = enableConsoleLogging,
+      sharedPackageNames = sharedPackageNames,
+      sharedSecret = sharedSecret)
     Emarsys.setup(config)
 
     val eventHandler = RNEmarsysEventHandler.getInstance()

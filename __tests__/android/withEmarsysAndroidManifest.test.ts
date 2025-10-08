@@ -22,6 +22,9 @@ describe('withEmarsysAndroidManifest', () => {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
       enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
     };
     jest.clearAllMocks();
   });
@@ -67,7 +70,10 @@ describe('withEmarsysAndroidManifest', () => {
     const result = withEmarsysAndroidManifest(configWithManifest, {
       applicationCode: 'TEST123',
       merchantId: 'MERCHANT456',
-      enableConsoleLogging: false
+      enableConsoleLogging: false,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
     }) as AndroidManifestConfig;
 
     const app = result.modResults.manifest.application[0];
@@ -75,7 +81,7 @@ describe('withEmarsysAndroidManifest', () => {
       expect.arrayContaining([
         expect.objectContaining({
           $: {
-            'android:name': 'EMSApplicationCode',
+            'android:name': 'com.emarsys.rnwrapper.applicationCode',
             'android:value': 'TEST123'
           }
         })
@@ -96,7 +102,10 @@ describe('withEmarsysAndroidManifest', () => {
     const result = withEmarsysAndroidManifest(configWithManifest, {
       applicationCode: 'TEST123',
       merchantId: 'MERCHANT456',
-      enableConsoleLogging: false
+      enableConsoleLogging: false,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
     }) as AndroidManifestConfig;
 
     const app = result.modResults.manifest.application[0];
@@ -104,7 +113,7 @@ describe('withEmarsysAndroidManifest', () => {
       expect.arrayContaining([
         expect.objectContaining({
           $: {
-            'android:name': 'EMSMerchantId',
+            'android:name': 'com.emarsys.rnwrapper.merchantId',
             'android:value': 'MERCHANT456'
           }
         })
@@ -269,13 +278,13 @@ describe('withEmarsysAndroidManifest', () => {
             'meta-data': [
               {
                 $: {
-                  'android:name': 'EMSApplicationCode',
+                  'android:name': 'com.emarsys.rnwrapper.applicationCode',
                   'android:value': 'EXISTING123'
                 }
               },
               {
                 $: {
-                  'android:name': 'EMSMerchantId',
+                  'android:name': 'com.emarsys.rnwrapper.merchantId',
                   'android:value': 'EXISTING456'
                 }
               }
@@ -301,17 +310,20 @@ describe('withEmarsysAndroidManifest', () => {
     const result = withEmarsysAndroidManifest(configWithManifest, {
       applicationCode: 'NEW123',
       merchantId: 'NEW456',
-      enableConsoleLogging: false
+      enableConsoleLogging: false,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
     }) as AndroidManifestConfig;
 
     const app = result.modResults.manifest.application[0];
     
     // Should not duplicate existing meta-data
     const applicationCodeEntries = app['meta-data']?.filter(
-      (meta: any) => meta.$['android:name'] === 'EMSApplicationCode'
+      (meta: any) => meta.$['android:name'] === 'com.emarsys.rnwrapper.applicationCode'
     );
     const merchantIdEntries = app['meta-data']?.filter(
-      (meta: any) => meta.$['android:name'] === 'EMSMerchantId'
+      (meta: any) => meta.$['android:name'] === 'com.emarsys.rnwrapper.merchantId'
     );
     
     expect(applicationCodeEntries).toHaveLength(1);
@@ -325,7 +337,7 @@ describe('withEmarsysAndroidManifest', () => {
   });
 
   describe('enableConsoleLogging functionality', () => {
-    it('should add EMSEnableConsoleLogging meta-data when enableConsoleLogging is true', () => {
+    it('should add com.emarsys.rnwrapper.enableConsoleLogging meta-data when enableConsoleLogging is true', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -338,7 +350,10 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'TEST123',
         merchantId: 'MERCHANT456',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
@@ -346,7 +361,7 @@ describe('withEmarsysAndroidManifest', () => {
         expect.arrayContaining([
           expect.objectContaining({
             $: {
-              'android:name': 'EMSEnableConsoleLogging',
+              'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
               'android:value': 'true'
             }
           })
@@ -354,7 +369,7 @@ describe('withEmarsysAndroidManifest', () => {
       );
     });
 
-    it('should not add EMSEnableConsoleLogging meta-data when enableConsoleLogging is false', () => {
+    it('should not add com.emarsys.rnwrapper.enableConsoleLogging meta-data when enableConsoleLogging is false', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -367,17 +382,20 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'TEST123',
         merchantId: 'MERCHANT456',
-        enableConsoleLogging: false
+        enableConsoleLogging: false,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
       const enableConsoleLoggingEntries = app['meta-data']?.filter(
-        (meta: any) => meta.$['android:name'] === 'EMSEnableConsoleLogging'
+        (meta: any) => meta.$['android:name'] === 'com.emarsys.rnwrapper.enableConsoleLogging'
       );
       expect(enableConsoleLoggingEntries || []).toHaveLength(0);
     });
 
-    it('should add EMSEnableConsoleLogging with all other options', () => {
+    it('should add com.emarsys.rnwrapper.enableConsoleLogging with all other options', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -390,7 +408,10 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'FULL_TEST',
         merchantId: 'FULL_MERCHANT',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
@@ -398,19 +419,19 @@ describe('withEmarsysAndroidManifest', () => {
         expect.arrayContaining([
           expect.objectContaining({
             $: {
-              'android:name': 'EMSApplicationCode',
+              'android:name': 'com.emarsys.rnwrapper.applicationCode',
               'android:value': 'FULL_TEST'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSMerchantId',
+              'android:name': 'com.emarsys.rnwrapper.merchantId',
               'android:value': 'FULL_MERCHANT'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSEnableConsoleLogging',
+              'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
               'android:value': 'true'
             }
           })
@@ -431,14 +452,17 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: '',
         merchantId: '',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
       expect(app['meta-data']).toEqual([
         expect.objectContaining({
           $: {
-            'android:name': 'EMSEnableConsoleLogging',
+            'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
             'android:value': 'true'
           }
         })
@@ -458,7 +482,10 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: '',
         merchantId: '',
-        enableConsoleLogging: false
+        enableConsoleLogging: false,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
@@ -467,7 +494,7 @@ describe('withEmarsysAndroidManifest', () => {
       expect(app.service).toBeDefined();
     });
 
-    it('should overwrite existing EMSEnableConsoleLogging when provided', () => {
+    it('should overwrite existing com.emarsys.rnwrapper.enableConsoleLogging when provided', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -475,17 +502,17 @@ describe('withEmarsysAndroidManifest', () => {
             application: [{
               'meta-data': [{
                 $: {
-                  'android:name': 'EMSApplicationCode',
+                  'android:name': 'com.emarsys.rnwrapper.applicationCode',
                   'android:value': 'OLD_CODE'
                 }
               }, {
                 $: {
-                  'android:name': 'EMSMerchantId',
+                  'android:name': 'com.emarsys.rnwrapper.merchantId',
                   'android:value': 'OLD_MERCHANT'
                 }
               }, {
                 $: {
-                  'android:name': 'EMSEnableConsoleLogging',
+                  'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
                   'android:value': 'false'
                 }
               }]
@@ -497,7 +524,10 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'NEW_CODE',
         merchantId: 'NEW_MERCHANT',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
@@ -505,19 +535,19 @@ describe('withEmarsysAndroidManifest', () => {
         expect.arrayContaining([
           expect.objectContaining({
             $: {
-              'android:name': 'EMSApplicationCode',
+              'android:name': 'com.emarsys.rnwrapper.applicationCode',
               'android:value': 'NEW_CODE'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSMerchantId',
+              'android:name': 'com.emarsys.rnwrapper.merchantId',
               'android:value': 'NEW_MERCHANT'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSEnableConsoleLogging',
+              'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
               'android:value': 'true'
             }
           })
@@ -525,7 +555,7 @@ describe('withEmarsysAndroidManifest', () => {
       );
     });
 
-    it('should preserve other existing meta-data when adding EMSEnableConsoleLogging', () => {
+    it('should preserve other existing meta-data when adding com.emarsys.rnwrapper.enableConsoleLogging', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -545,7 +575,10 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'TEST_CODE',
         merchantId: 'TEST_MERCHANT',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
@@ -559,19 +592,19 @@ describe('withEmarsysAndroidManifest', () => {
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSApplicationCode',
+              'android:name': 'com.emarsys.rnwrapper.applicationCode',
               'android:value': 'TEST_CODE'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSMerchantId',
+              'android:name': 'com.emarsys.rnwrapper.merchantId',
               'android:value': 'TEST_MERCHANT'
             }
           }),
           expect.objectContaining({
             $: {
-              'android:name': 'EMSEnableConsoleLogging',
+              'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
               'android:value': 'true'
             }
           })
@@ -579,7 +612,7 @@ describe('withEmarsysAndroidManifest', () => {
       );
     });
 
-    it('should not duplicate EMSEnableConsoleLogging meta-data entries', () => {
+    it('should not duplicate com.emarsys.rnwrapper.enableConsoleLogging meta-data entries', () => {
       const configWithManifest: AndroidManifestConfig = {
         ...mockConfig,
         modResults: {
@@ -587,17 +620,17 @@ describe('withEmarsysAndroidManifest', () => {
             application: [{
               'meta-data': [{
                 $: {
-                  'android:name': 'EMSApplicationCode',
+                  'android:name': 'com.emarsys.rnwrapper.applicationCode',
                   'android:value': 'OLD_CODE'
                 }
               }, {
                 $: {
-                  'android:name': 'EMSMerchantId',
+                  'android:name': 'com.emarsys.rnwrapper.merchantId',
                   'android:value': 'OLD_MERCHANT'
                 }
               }, {
                 $: {
-                  'android:name': 'EMSEnableConsoleLogging',
+                  'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
                   'android:value': 'false'
                 }
               }]
@@ -609,22 +642,149 @@ describe('withEmarsysAndroidManifest', () => {
       const result = withEmarsysAndroidManifest(configWithManifest, {
         applicationCode: 'NEW_CODE',
         merchantId: 'NEW_MERCHANT',
-        enableConsoleLogging: true
+        enableConsoleLogging: true,
+        iosSharedKeychainAccessGroup: '',
+        androidSharedPackageNames: [],
+        androidSharedSecret: ''
       }) as AndroidManifestConfig;
 
       const app = result.modResults.manifest.application[0];
       const enableConsoleLoggingEntries = app['meta-data']?.filter(
-        (meta: any) => meta.$['android:name'] === 'EMSEnableConsoleLogging'
+        (meta: any) => meta.$['android:name'] === 'com.emarsys.rnwrapper.enableConsoleLogging'
       );
       
       // Should not duplicate - only one entry should exist
       expect(enableConsoleLoggingEntries).toHaveLength(1);
       expect(enableConsoleLoggingEntries![0]).toEqual({
         $: {
-          'android:name': 'EMSEnableConsoleLogging',
+          'android:name': 'com.emarsys.rnwrapper.enableConsoleLogging',
           'android:value': 'true'
         }
       });
+    });
+  });
+
+  describe('androidSharedPackageNames functionality', () => {
+    it('should add com.emarsys.rnwrapper.sharedPackageNames meta-data when androidSharedPackageNames is provided', () => {
+      const configWithManifest: AndroidManifestConfig = {
+        ...mockConfig,
+        modResults: {
+          manifest: {
+            application: [{}]
+          }
+        }
+      };
+
+      const result = withEmarsysAndroidManifest(configWithManifest, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false,
+        androidSharedPackageNames: ['com.example.app1', 'com.example.app2'],
+        androidSharedSecret: 'secret123',
+        iosSharedKeychainAccessGroup: 'group.example'
+      }) as AndroidManifestConfig;
+
+      const app = result.modResults.manifest.application[0];
+      expect(app['meta-data']).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            $: {
+              'android:name': 'com.emarsys.rnwrapper.sharedPackageNames',
+              'android:value': 'com.example.app1,com.example.app2'
+            }
+          })
+        ])
+      );
+    });
+
+    it('should add com.emarsys.rnwrapper.sharedSecret meta-data when androidSharedSecret is provided', () => {
+      const configWithManifest: AndroidManifestConfig = {
+        ...mockConfig,
+        modResults: {
+          manifest: {
+            application: [{}]
+          }
+        }
+      };
+
+      const result = withEmarsysAndroidManifest(configWithManifest, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false,
+        androidSharedPackageNames: ['com.example.app'],
+        androidSharedSecret: 'secret123',
+        iosSharedKeychainAccessGroup: 'group.example'
+      }) as AndroidManifestConfig;
+
+      const app = result.modResults.manifest.application[0];
+      expect(app['meta-data']).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            $: {
+              'android:name': 'com.emarsys.rnwrapper.sharedSecret',
+              'android:value': 'secret123'
+            }
+          })
+        ])
+      );
+    });
+
+    it('should handle single package name in androidSharedPackageNames', () => {
+      const configWithManifest: AndroidManifestConfig = {
+        ...mockConfig,
+        modResults: {
+          manifest: {
+            application: [{}]
+          }
+        }
+      };
+
+      const result = withEmarsysAndroidManifest(configWithManifest, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false,
+        androidSharedPackageNames: ['com.example.single'],
+        androidSharedSecret: 'secret123',
+        iosSharedKeychainAccessGroup: 'group.example'
+      }) as AndroidManifestConfig;
+
+      const app = result.modResults.manifest.application[0];
+      expect(app['meta-data']).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            $: {
+              'android:name': 'com.emarsys.rnwrapper.sharedPackageNames',
+              'android:value': 'com.example.single'
+            }
+          })
+        ])
+      );
+    });
+
+    it('should not add androidSharedPackageNames meta-data when empty array provided', () => {
+      const configWithManifest: AndroidManifestConfig = {
+        ...mockConfig,
+        modResults: {
+          manifest: {
+            application: [{}]
+          }
+        }
+      };
+
+      const result = withEmarsysAndroidManifest(configWithManifest, {
+        applicationCode: 'TEST123',
+        merchantId: 'MERCHANT456',
+        enableConsoleLogging: false,
+        androidSharedPackageNames: [],
+        androidSharedSecret: '',
+        iosSharedKeychainAccessGroup: ''
+      }) as AndroidManifestConfig;
+
+      const app = result.modResults.manifest.application[0];
+      const sharedPackageEntries = app['meta-data']?.filter(
+        (meta: any) => meta.$['android:name'] === 'com.emarsys.rnwrapper.sharedPackageNames'
+      );
+      expect(sharedPackageEntries || []).toHaveLength(0);
     });
   });
 });

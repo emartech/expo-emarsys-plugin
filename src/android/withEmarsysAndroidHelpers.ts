@@ -1,7 +1,7 @@
 export function setMetaData(
   app: any,
   name: string,
-  value: string
+  value: string | string[]
 ) {
   if (!app['meta-data']) {
     app['meta-data'] = [];
@@ -12,10 +12,13 @@ export function setMetaData(
     (item: any) => item.$ && item.$['android:name'] === name
   );
   
+  // Convert array values to comma-separated string
+  const stringValue = Array.isArray(value) ? value.join(',') : value;
+  
   const metaDataEntry = {
     $: {
       'android:name': name,
-      'android:value': value,
+      'android:value': stringValue,
     },
   };
   

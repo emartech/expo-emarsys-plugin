@@ -10,6 +10,10 @@ describe('withEmarsysiOS', () => {
     _mockOptions = {
       applicationCode: 'TEST_APP_CODE',
       merchantId: 'TEST_MERCHANT_ID',
+      enableConsoleLogging: true,
+      androidSharedPackageNames: [],
+      androidSharedSecret: '',
+      iosSharedKeychainAccessGroup: '4J5FXBB97U.com.ems.EmarsysShared'
     };
     jest.clearAllMocks();
   });

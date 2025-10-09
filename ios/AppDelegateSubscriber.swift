@@ -5,18 +5,19 @@ import RNEmarsysWrapper
 public class AppDelegateSubscriber: ExpoAppDelegateSubscriber {
 
   public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    let infoPList = Bundle.main.infoDictionary
-    let config = EMSConfig.make { build in
-      if let applicationCode = StorageUtil.string(forKey: "applicationCode", withInfoPListFallback: true), applicationCode != "" {
+    let options = EmarsysUtils.fetchStoredAttributes()
+    
+    let config: EMSConfig = EMSConfig.make { build in
+      if let applicationCode = options.applicationCode {
         build.setMobileEngageApplicationCode(applicationCode)
       }
-      if let merchantId = StorageUtil.string(forKey: "merchantId", withInfoPListFallback: true), merchantId != "" {
+      if let merchantId = options.merchantId {
         build.setMerchantId(merchantId)
       }
-      if (infoPList?["com.emarsys.rnwrapper.enableConsoleLogging"] as? Bool) ?? false {
+      if options.enableConsoleLogging {
         build.enableConsoleLogLevels([EMSLogLevel.basic, EMSLogLevel.error, EMSLogLevel.info, EMSLogLevel.debug])
       }
-      if let sharedKeychainAccessGroup = infoPList?["com.emarsys.rnwrapper.sharedKeychainAccessGroup"] as? String, sharedKeychainAccessGroup != "" {
+      if let sharedKeychainAccessGroup = options.sharedKeychainAccessGroup {
         build.setSharedKeychainAccessGroup(sharedKeychainAccessGroup)
       }
     }

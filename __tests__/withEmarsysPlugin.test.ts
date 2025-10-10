@@ -10,6 +10,10 @@ describe('withEmarsysPlugin', () => {
   const mockOptions: EMSOptions = {
     applicationCode: 'TEST_APP_CODE',
     merchantId: 'TEST_MERCHANT_ID',
+    enableConsoleLogging: true,
+    androidSharedPackageNames: [],
+    androidSharedSecret: '',
+    iosSharedKeychainAccessGroup: ''
   };
 
   it('should be a function', () => {

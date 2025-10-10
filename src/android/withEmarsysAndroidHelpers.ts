@@ -1,18 +1,33 @@
-export function addMetaData(
+export function setMetaData(
   app: any,
   name: string,
-  value: string
+  value: string | string[]
 ) {
   if (!app['meta-data']) {
     app['meta-data'] = [];
   }
-  if (!app['meta-data'].some((item: any) => item.$ && item.$['android:name'] === name)) {
-    app['meta-data'].push({
-      $: {
-        'android:name': name,
-        'android:value': value,
-      },
-    });
+  
+  // Find existing entry
+  const existingIndex = app['meta-data'].findIndex(
+    (item: any) => item.$ && item.$['android:name'] === name
+  );
+  
+  // Convert array values to comma-separated string
+  const stringValue = Array.isArray(value) ? value.join(',') : value;
+  
+  const metaDataEntry = {
+    $: {
+      'android:name': name,
+      'android:value': stringValue,
+    },
+  };
+  
+  if (existingIndex !== -1) {
+    // Update existing entry
+    app['meta-data'][existingIndex] = metaDataEntry;
+  } else {
+    // Add new entry
+    app['meta-data'].push(metaDataEntry);
   }
 }
 

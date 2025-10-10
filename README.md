@@ -28,8 +28,12 @@ npm install "git+ssh://git@github.com/emartech/expo-emarsys-plugin.git#<version>
       [
         "expo-emarsys-plugin",
         {
-          "applicationCode": <APPLICATION_CODE>,
-          "merchantId": <MERCHANT_ID>
+          "applicationCode": <APPLICATION_CODE: STRING>,
+          "merchantId": <MERCHANT_ID: STRING>,
+          "enableConsoleLogging": <ENABLE_CONSOLE_LOGGING: BOOL>,
+          "androidSharedPackageNames": <ANDROID_SHARED_PACKAGE_NAMES: LIST>,
+          "androidSharedSecret": <ANDROID_SHARED_SECRET: STRING>,
+          "iosSharedKeychainAccessGroup": <IOS_SHARED_KEYCHAIN_ACCESS_GROUP: STRING>
         }
       ]
     ]

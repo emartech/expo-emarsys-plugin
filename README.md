@@ -1,3 +1,5 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/emartech/expo-emarsys-plugin)](https://api.reuse.software/info/github.com/emartech/expo-emarsys-plugin)
+
 # Expo Emarsys Plugin
 
 > **Important**  
